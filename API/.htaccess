@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteCond %{HTTPS} !=on
+RewriteCond $1 !^(index\.php|uploadfile|uploads|application|images|img|font|css|js|robots\.txt|template)
+RewriteRule ^(.*)$ /index.php?/$1 [L]
