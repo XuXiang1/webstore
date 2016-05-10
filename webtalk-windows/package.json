@@ -1,0 +1,28 @@
+{
+    "name": "Wow Talk",
+    "description": "Wow Talk",
+    "version": "0.1.0",
+    "window": {
+        "title" : "Wow Talk",
+        "icon": "favicon.ico",
+        "as_desktop" : false,
+        "resizable" : true,
+        "always-on-top" : false,
+        "fullscreen" : false,
+        "kiosk" : false,
+        "frame" : false,
+        "toolbar": false,
+        "width": 900,
+        "height": 700,
+        "position": "center",
+        "max_width": 1600,
+        "transparent":true
+    },
+    "main" : "src/index.html",
+     "webkit": {
+    "plugin": true,
+    "java": false,
+    "page-cache": false
+  	},
+  	"user-agent":"Mozilla/5.0 (Windows NT 6.1; WOW64) WowTalkClinet (KHTML, like Gecko) Chrome/28.0.1500.11 Safari/537.36"
+}

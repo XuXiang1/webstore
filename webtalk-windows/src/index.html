@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang='en'>
+
+	<head>
+		<meta charset='UTF-8'>
+		<title>Wow Talk</title>
+		<link rel='stylesheet' href='./reset.css'>
+		<link rel='stylesheet' href='./style.css'>
+		<script src="./jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<header>
+			<ul>
+				<li>
+					<a href='#' title='Minimize' id='windowControlMinimize'></a>
+				</li>
+				<!--
+         -->
+				<li>
+					<a href='#' title='Maximize' id='windowControlMaximize'></a>
+				</li>
+				<!--
+         -->
+				<li>
+					<a href='#' title='Close' id='windowControlClose'></a>
+				</li>
+			</ul>
+		</header>
+		<!--<div id="load" align="center">
+
+			<img src="loading.gif" />
+
+		</div>-->
+		<!-- 首先放一个div，用做loading效果 -->
+		<div class="main">
+			<iframe src="" id="iframepage" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+		</div>
+		<script type="text/javascript">
+			window.gui = require('nw.gui');
+			handleLinks = function(event) {
+				var href;
+
+				function checkLinks(element) {
+					if (element.nodeName.toLowerCase() === 'a') {
+						href = element.getAttribute('href');
+						if (href) {
+							gui.Shell.openExternal(href);
+							// important, prevent the default event from happening!
+							event.preventDefault();
+						}
+					} else if (element.parentElement) {
+						checkLinks(element.parentElement);
+					}
+				}
+				checkLinks(event.target);
+			};
+//				var obja = document.getElementById("iframepage");
+//				var objb = document.getElementById("load");
+//				obja.style.display = "none"; //隐藏 
+//				objb.style.display = "block"; //显示
+
+			function isLoaded() {
+				// let's see if the iframe has finished loading
+				var iframe = document.getElementById('myframe');
+				if (iframe && iframe.contentWindow && iframe.contentWindow.document &&
+					iframe.contentWindow.document.body &&
+					iframe.contentWindow.document.body.innerHTML) {
+					//now deal with links
+					iframe.contentWindow.document.body.addEventListener('click', handleLinks, false);
+					objb.style.display = "none";
+					obja.style.display = "block";
+					
+				} else {
+					// not yet, let's wait a bit and try again
+					setTimeout(isLoaded, 300);
+				}
+			};
+		</script>
+		<script>
+			var nw = require('nw.gui');
+			var winparent = nw.Window.get();
+			winparent.isMaximized = false;
+			window.addEventListener('message', function(e) {
+				try {
+					var jsonstr = e.data;
+					var jsonobj = JSON.parse(jsonstr);
+					showFunnyNotification(jsonobj[0], jsonobj[1]);
+				} catch (e) {}
+			}, false);
+			var isShowWindow = true;
+			var tray = new nw.Tray({
+				title: 'Wow Talk',
+				icon: 'favicon.ico'
+			});
+			//Close window to hide;
+			winparent.on('close', function() {
+				this.hide();
+				isShowWindow = false;
+			});
+			tray.tooltip = 'Wow Talk';
+			//Menu
+			var menu = new nw.Menu();
+			menu.append(new nw.MenuItem({
+				type: 'normal',
+				label: 'Show/Hide',
+				click: function() {
+					if (isShowWindow) {
+						winparent.hide();
+						isShowWindow = false;
+					} else {
+						winparent.show();
+						isShowWindow = true;
+					}
+				}
+			}));
+			menu.append(new nw.MenuItem({
+				type: 'normal',
+				label: 'Quit',
+				click: function() {
+					nw.App.quit();
+				}
+			}))
+			tray.menu = menu;
+			//Click to show/hide;
+			tray.on('click',
+				function() {
+					if (isShowWindow) {
+						winparent.hide();
+						isShowWindow = false;
+					} else {
+						winparent.show();
+						isShowWindow = true;
+					}
+				});
+		</script>
+		<script>
+			$(function() {
+
+				//				$("#iframepage").onbeforeprint(function(){
+				//					$("#iframepage").css('background','red');
+				//				});
+				//iframe加载loading
+				//<![CDATA[ 
+				goto_page();
+				resizeframe();
+				$(window).bind('resize', resizeframe);
+				//]]>
+			});
+
+			function resizeframe() {
+				var new_height = $("body").height() - 30;
+				$("#iframepage").css("height", new_height + "px");
+			}
+
+			function goto_page() {
+				$("#iframepage").attr("src", 'https://biz.wowtalk.org/webtalk/login');
+				//$("#iframepage").attr("src", 'https://dev02.wowtalkapi.com/webtalk/login');
+			}
+			// Min
+			document.getElementById('windowControlMinimize').onclick = function() {
+				winparent.minimize();
+			}; // Close
+			document.getElementById('windowControlClose').onclick = function() {
+				winparent.close();
+			}; // Max
+			document.getElementById('windowControlMaximize').onclick = function() {
+				if (winparent.isMaximized)
+					winparent.unmaximize();
+				else
+					winparent.maximize();
+			};
+			winparent.on('maximize', function() {
+				winparent.isMaximized = true;
+			});
+			winparent.on('unmaximize', function() {
+				winparent.isMaximized = false;
+			});
+		</script>
+		<script src="./nw-desktop-notifications.js"></script>
+		<script>
+			function showFunnyNotification(title, content) {
+				var icon = './desktop-notify.png';
+				window.LOCAL_NW.desktopNotifications.notify(icon, title, content, function() {
+					//window.frames[0].postMessage('getcolor','http://webtalk.com');
+					winparent.show();
+				});
+			}
+		</script>
+	</body>
+
+</html>
