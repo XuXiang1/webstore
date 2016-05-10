@@ -1,0 +1,160 @@
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="javascript: location.reload();" class="btn btn-grey"><i
+                        class="glyphicon glyphicon-refresh"></i>刷新</a> <a href="#" class="btn"
+                            data-toggle="modal" data-target="#myModal" ><i
+                                class="glyphicon glyphicon-pencil icon-white"></i>修改公司信息</a>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                            	<th style="width: 80px;">编号</th>
+                                <th style="width: 120px;">留言者
+                                </th>
+                                <th style="width: 120px;">邮箱</th>
+                                <th style="width: 300px;">内容</th>
+                                <th style="width: 120px;">发送时间</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myNewsList">
+                        </tbody>
+                    </table>
+                    <div style="display: block; width: 100%; text-align: center;"
+                        id="loadingImage">
+                    </div>
+                    <div id="Pagination" class="m-pagination"
+                        style="padding-left: 15px;">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">编辑公司信息</h4>
+            </div>
+            <div class="modal-body">
+                <form id="myform" action="__URL__/EditCompany" method="post">
+                    <div class="form-group">
+                        <label for="Address"><b>公司名称</b></label>
+                        <input class="form-control" name="Name" type="text" placeholder="" value="<{$initdata.Name}>">
+                    </div>
+                    <div class="form-group">
+                        <label for="Address"><b>公司地址</b></label>
+                        <input class="form-control" name="Address" type="text" placeholder="" value="<{$initdata.Address}>">
+                    </div>
+                    <div class="form-group">
+                        <label for="Addpoint"><b>公司坐标</b></label>
+                        <p>在这里可以查到坐标 : &nbsp;&nbsp;&nbsp;&nbsp;<a href="http://api.map.baidu.com/lbsapi/getpoint/index.html" target="_blank">http://api.map.baidu.com/lbsapi/getpoint/index.html</a></p>
+                        <b>切换城市->搜索公司名->右侧复制坐标</b>
+
+                    </div>
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">X
+                                </span>
+                                <input type="text" name="pointX" class="form-control" aria-label="..." value="<{$initdata.PointX}>">
+                            </div>
+                            <!-- /input-group -->
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="input-group">
+                                <span class="input-group-addon">Y
+                                </span>
+                                <input type="text" name="pointY" class="form-control" aria-label="..." value="<{$initdata.PointY}>">
+                            </div>
+                            <!-- /input-group -->
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Email"><b>公司邮箱</b></label>
+                        <input class="form-control" name="Email" type="text" placeholder="" value="<{$initdata.Email}>">
+                    </div>
+                    <div class="form-group">
+                        <label for="Tel"><b>公司电话</b></label>
+                        <input class="form-control" name="Tel" type="text" placeholder="" value="<{$initdata.Phone}>">
+                    </div>
+                    <div class="form-group">
+                        <label for="NewsContent"><b>传真</b></label>
+                        <input class="form-control" name="Fax" type="text" placeholder="" value="<{$initdata.Fax}>">
+                    </div>
+                    <div class="clearfix"></div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="dopost()">
+                    提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function dopost() {
+        $("#myform").submit();
+    }
+
+    $(function () {
+        startPaging(0, 3);
+    });
+    function startPaging(page_index, flag) {
+        var url = '__URL__/ContactusPage';
+        var postdata = {
+            PageIndex: page_index + 1
+        };
+        $("#myNewsList").html("");
+        AjaxStart($("#loadingImage"));
+        $.ajax({
+            type: "POST",
+            cache: false,
+            url: url,
+            data: postdata,
+            processData: true,
+            success: function (data) {
+                AjaxStop($("#loadingImage"));
+                $("#myNewsList").html(data);
+                var pagecount = parseInt($("#mydatacount").val());
+                if (flag != 3) {
+                    $("#Pagination").page('destroy');
+                }
+                $("#Pagination").page({
+                    debug: true,
+                    total: pagecount,
+                    pageSize: 10,
+                    firstBtnText: '首页',
+                    lastBtnText: '尾页',
+                    prevBtnText: '上一页',
+                    nextBtnText: '下一页',
+                    showInfo: true,
+                    jumpBtnText: '跳转',
+                    showPageSizes: true,
+                    mypageclass: 'm-pagination-page',
+                    infoFormat: '{start} ~ {end}条，共{total}条',
+                    mypageindex: page_index
+                }).on("pageClicked", function (event, pageIndex) {
+                    console.log(pageIndex);
+                    startPaging(pageIndex)
+                });
+            },
+            error: function (ex) {
+
+            }
+        });
+    }
+</script>

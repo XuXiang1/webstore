@@ -1,0 +1,219 @@
+<extend name="Public:Layout" />
+<block name="head">
+	<link rel="stylesheet" type="text/css" href="__JS__/uploadify/uploadify.css">
+</block>
+<block name="content">
+	<div class="container">
+		<div class="row job-div">
+			<div class="col-md-7">
+				<!-- Job Description -->
+				<div class="job-details-wrapper" style="padding-left: 2px;">
+
+					<h3><{$jobdata.JobName}></h3>
+					<br />
+					<p>
+						<{$jobdata.Description}>
+					</p>
+					<br />
+					<h4>技能要求</h4>
+
+					<ul>
+						<volist name="skilldata" id="data">
+							<li>
+								<{$data}>
+							</li>
+						</volist>
+					</ul>
+					<br />
+					<h4>如何应聘?</h4>
+					<p>
+						简历发送至:
+						<a href="mailto:<{$jobwelcome.MANAGEREMAIL}>">
+							<{$jobwelcome.MANAGEREMAIL}>
+						</a>
+					</p>
+				</div>
+				<!-- End Job Description -->
+			</div>
+			<div class="col-sm-5" style="padding-left: 0;">
+				<div class="contactform">
+					<div class="contact-form-wrapper">
+						<div class="alert alert-success" role="alert">
+							<p id="takeaction"><span>上传简历</span> （文档大小必须小于 200KB）:</p>
+						</div>
+						<form action="__URL__/addresum" method="post" class="form-horizontal" id="myform" role="form">
+							<div class="form-group">
+								<label for="resum-Name" class="col-sm-4 control-label">您的称呼:</label>
+								<div class="col-sm-8">
+									<input class="form-control" name="resumName" id="resum-Name" onblur="checkinput()" maxlength="100" type="text" placeholder="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="contact-email" class="col-sm-4 control-label">您的邮箱:</label>
+								<div class="col-sm-8">
+									<input class="form-control" name="resumEmail" id="resum-Email" onblur="checkinput()" maxlength="100" type="text" placeholder="">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="contact-message" class="col-sm-4 control-label">您的简历</label>
+								<div class="col-sm-8">
+									<input class="col-md-6" type="file" name="file_upload" id="file_upload" />
+									<div id="queue"></div>
+									<input type="hidden" id="filename" name="resumFileName" value="" />
+									<input type="hidden" name="JobID" value="<{$jobdata.ID}>" />
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="contact-message" class="col-sm-3 control-label"><b></b></label>
+								<div class="col-sm-9" id="warningDIV">
+
+								</div>
+
+							</div>
+						</form>
+						<div>
+							<div class="create_btn">
+								<a href="javascript:void(0)" onclick="return Dpost()">提交简历</a>
+							</div>
+						<!--	<button onclick="return Dpost()" class="btn btn-large pull-right">提交</button>-->
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="__JS__/uploadify/jquery.uploadify.js"></script>
+
+	<script>
+		$(function() {
+			if (navigator.platform.indexOf('Win32') != -1) {
+				//pc
+				//window.location.href="电脑网址";
+			} else {
+				//shouji
+				$("#takeaction").append("<br /><span style='color:red'>手机不可以使用上传功能，请在PC上使用，谢谢</span>");
+			}
+			$('#file_upload')
+				.uploadify({
+					auto: false,
+					buttonCursor: 'hand',
+					buttonText: '<div>选择简历</div>',
+					debug: false,
+					fileObjName: 'Filedata',
+					fileSizeLimit: 200,
+					fileTypeExts: '*.doc;*.docx;',
+					fileTypeDesc: 'All Files',
+					formData: {
+						currentroot: '__ROOT__/',
+						timestamp: '<{$timestamp}>',
+						token: '<{$unique_salt}>',
+						target: 'addresum'
+					},
+					height: 30,
+					width: 120,
+					itemTemplate: false,
+					method: 'post',
+					multi: false,
+					overrideEvents: [],
+					preventCaching: true,
+					progressData: 'percentage',
+					queueID: false,
+					queueSizeLimit: 999,
+					removeCompleted: true,
+					removeTimeout: 3,
+					requeueErrors: false,
+					successTimeout: 30,
+					swf: '__JS__/uploadify/uploadify.swf',
+					uploader: '__ROOT__/Admin/Common/uploadify.php',
+					uploadLimit: 10,
+					onCancel: function(file) {
+						console.log('The file' + file.name + 'was cancelled.')
+					},
+					onClearQueue: function(queueItemCount) {
+						console
+							.log(queueItemCount + 'file(s) were removed frome the queue')
+					},
+					onDestroy: function() {},
+					onDialogClose: function(queueData) {
+						console.log(queueData.filesSelected + '\n' + queueData.filesQueued + '\r\n' + queueData.filesReplaced + '\r\n' + queueData.filesCancelled + '\r\n' + queueData.filesErrored)
+					},
+					onDialogOpen: function() {},
+					onDisable: function() {},
+					onEnalbe: function() {},
+					onFallback: function() {},
+					onInit: function(instance) {
+						console.log('The queue ID is' + instance.settings.queueID)
+					},
+					onQueueComplete: function(queueData) {
+						console.log(queueData.uploadsSuccessful + '\n' + queueData.uploadsErrored)
+					},
+					onSelect: function(file) {
+						console.log(file.name)
+					},
+					onSelectError: function(file, errorCode, errorMsg) {
+						console.log(errorCode)
+						console.log(this.queueData.errorMsg)
+					},
+					onSWFReady: function() {},
+					onUploadComplete: function(file) {},
+					onUploadError: function(file, errorCode, erorMsg,
+						errorString) {
+						// alert(erorMsg + "__-____"+errorString);
+					},
+					onUploadProgress: function(file, bytesUploaded,
+						bytesTotal, totalBytesUploaded,
+						totalBytesTotal) {
+						$('#pregress').html(
+							'总共需要上传' + bytesTotal + '字节，' + '已上传' + totalBytesTotal + '字节')
+					},
+					onUploadStart: function(file) {
+						console.log('start update')
+					},
+					onUploadSuccess: function(file, response) {
+						if (response == 'Invalid') {
+							response = '';
+						}
+						$("#filename").val(response);
+						PostData();
+					}
+				});
+		});
+
+		function checkinput() {
+			var rName = $("#resum-Name").val();
+			var rEmail = $("#resum-Email").val();
+			if (rName.trim() == "" || rEmail.trim() == "") {
+				addWarning("请填写‘称呼’ 和 '邮箱'");
+			} else {
+				if ($(".fileName").length == 1) { //有文件
+					removeWarning();
+				} else { //没有图片
+					addWarning('请选择文件');
+				}
+			}
+		}
+
+		function Dpost() {
+			checkinput();
+			if ($("#warningDIV").html().trim() == "") {
+				$('#file_upload').uploadify('upload');
+				//alert('开始上传');
+			}
+		}
+
+		function addWarning(mystr) {
+			$("#warningDIV").html("");
+			var warningspan = $("<span></span>").addClass("label label-warning").html(mystr);
+			$("#warningDIV").append(warningspan);
+		}
+
+		function removeWarning() {
+			$("#warningDIV").html("");
+		}
+
+		function PostData() {
+			$("#myform").submit();
+		}
+	</script>
+</block>

@@ -1,0 +1,13 @@
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+</IfModule>
+
+<IfModule mod_security.c>
+     # 禁止对 POST 数据进行安全扫描，使不中断多文件上传等功能
+     SecFilterEngine Off
+     SecFilterScanPOST Off
+ </IfModule>
+

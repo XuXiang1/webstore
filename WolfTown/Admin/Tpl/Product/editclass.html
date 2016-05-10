@@ -1,0 +1,313 @@
+<div class="section">
+	<div class="container">
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a href="javascript: location.reload();" class="btn btn-grey"><i
+                        class="glyphicon glyphicon-refresh"></i>刷新</a>
+					<a href="__URL__/index" class="btn btn-grey"><i class="glyphicon glyphicon-arrow-left"></i>返回</a>
+				</div>
+				<div class="panel-body">
+					<div class="row" style="padding: 12px;" id="myclasslist">
+
+						<h2>分类</h2>
+
+						<div class="form-group">
+							<div class="input-group col-md-3" style="padding-right: 13px;">
+								<input type="text" id="className" class="form-control" placeholder="输入一级分类名称"><span class="input-group-btn"><button type="button" class="btn btn-primary" onclick="addproductclass()">添加一级分类</button></span>
+							</div>
+						</div>
+
+						<volist name="parentdata" id="datap">
+
+							<div class="list-group col-md-3">
+								<div class="list-group-item active" style="border-color: rgb(66, 139, 202); color: rgb(255, 255, 255); background-color: rgb(66, 139, 202);"><span class="classtext"><{$datap[classname]}></span>
+									<input type="hidden" name="productclass[1][classid]" class="classid" value="<{$datap[ID]}>">
+									<input type="hidden" name="productclass[1][classname]" class="classname" value="<{$datap[classname]}>">
+									<input type="hidden" name="productclass[1][parentclass]" class="parentclass" value="<{$datap[parentclass]}>">
+									<input type="hidden" name="productclass[1][isparent]" class="isparent" value="<{$datap[isparent]}>">
+									<span onclick="deleteclass(this)" class="glyphicon glyphicon-remove pull-right" title="删除" aria-hidden="true" style="cursor: pointer; margin-left: 8px;"></span><span onclick="addsecond(this)" class="pull-right" title="添加二级分类" style="text-decoration: underline; cursor: pointer; margin-left: 8px;">添加二级分类</span>
+									<a href="javascript:void(0)" style="float:right;color:white;" onclick="editfirst(this)">编辑</a>
+								</div>
+								<volist name="chilrendata" id="datac">
+									<if condition="$datac[parentclass] eq $datap[ID]">
+										<div class="list-group-item"><span class="classtext"><{$datac[classname]}></span>
+											<input type="hidden" name="productclass[2][classid]" class="classid" value="<{$datac[ID]}>">
+											<input type="hidden" name="productclass[2][classname]" class="classname" value="<{$datac[classname]}>">
+											<input type="hidden" name="productclass[2][parentclass]" class="parentclass" value="<{$datac[parentclass]}>">
+											<input type="hidden" name="productclass[2][isparent]" class="isparent" value="<{$datac[isparent]}>">
+											<a href="javascript:void(0)" style="margin-left: 8px;float:right;" onclick="deleteclass(this)">删除</a><a href="javascript:void(0)" style="float:right;" onclick="editsecond(this)">编辑</a>
+										</div>
+									</if>
+
+								</volist>
+							</div>
+						</volist>
+
+					</div>
+
+					<div class="row" style="padding: 12px;">
+						<h2>品牌</h2>
+						<div class="form-group">
+							<div class="input-group col-md-3" style="padding-right: 13px;">
+								<input type="text" id="brandName" class="form-control" placeholder="输入品牌名称"><span class="input-group-btn"><button type="button" class="btn btn-primary" onclick="addbrand()">添加品牌</button></span>
+							</div>
+						</div>
+						<div class="list-group col-lg-3">
+							<div class="list-group-item active" style="background-color: #428bca;border-color: #428bca;color: #fff;">
+								<span>品牌名称</span>
+							</div>
+							<volist name="branddata" id="datab">
+								<div class="list-group-item">
+									<span class="branddata" pdata="<{$datab[ID]}>"><{$datab[name]}></span>
+									<a href="javascript:void(0)" style="margin-left: 8px;float: right;" onclick="deletebrand(this)">删除</a>
+									<a href="javascript:void(0)" style="float: right;" onclick="editbrand(this)">编辑</a>
+								</div>
+							</volist>
+
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="myModalBrand" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" style="font-weight: bold;font-size:larger;">品牌名称</h4>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="modbrandid" value="-1" />
+
+				<div class="form-group">
+					<input class="form-control" id="modbrandname" type="text" placeholder="" value="" maxlength="10">
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="savebrand()">
+					确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="myModalClass" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="addtripsd" style="font-weight: bold;font-size:larger;">添加二级分类</h4>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="parentid" value="-1" />
+				<input type="hidden" id="currentid" value="-1" />
+				<div class="form-group">
+					<label for="mod_local"><b>一级分类名称:</b></label>
+					<span id="parentname">
+						
+					</span>
+				</div>
+				<div class="form-group">
+					<label for="Trip"><b>分类名称:</b></label>
+					<input class="form-control" id="currentname" type="text" placeholder="" value="" maxlength="10">
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="editerji()">
+					确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	//品牌累
+	function addbrand() {
+		var brandname = $("#brandName").val();
+		if (brandname != "") {
+			var url = '__URL__/AddBrand';
+			var callback = function(data) {
+				if (data.status == 1) {
+					location.reload();
+				}
+			};
+			var postdata = {
+				brandid: 1,
+				brandname: brandname,
+			};
+			ajaxExecute(url, callback, postdata);
+		}
+	}
+
+	function editbrand(obj) {
+		var brandid = $(obj).parent().find(".branddata").first().attr("pdata");
+		var brandname = $(obj).parent().find(".branddata").first().html();
+		$("#modbrandid").val(brandid);
+		$("#modbrandname").val(brandname);
+		$("#myModalBrand").modal('show');
+	}
+
+	function deletebrand(obj) {
+		var brandid = $(obj).parent().find(".branddata").first().attr("pdata");
+		var brandname = $(obj).parent().find(".branddata").first().html();
+		var url = '__URL__/DeleteBrand';
+		var callback = function(data) {
+			if (data.status == 1) {
+				location.reload();
+			}
+		};
+		var postdata = {
+			brandid: brandid,
+			brandname: brandname,
+		};
+		ajaxExecute(url, callback, postdata);
+	}
+
+	function savebrand() {
+		var brandid = $("#modbrandid").val();;
+		var brandname = $("#modbrandname").val();;
+		var url = '__URL__/EditBrand';
+		var callback = function(data) {
+			if (data.status == 1) {
+				location.reload();
+			}
+		};
+		var postdata = {
+			brandid: brandid,
+			brandname: brandname,
+		};
+		ajaxExecute(url, callback, postdata);
+	}
+
+	function addproductclass() { //	产品分类
+		var classname = $("#className").val();
+		if (classname != "") {
+			var url = '__URL__/AddClass';
+			var callback = function(data) {
+				if (data.status == 1) {
+					location.reload();
+				}
+			};
+			var postdata = {
+				isparent: 1,
+				classname: classname,
+				parentclass: 0
+			};
+			ajaxExecute(url, callback, postdata);
+		} else {
+			alert("请填写一级分类名称");
+		}
+	}
+
+	function addsecond(obj) {
+		var parentid = $(obj).parent().find(".classid").first().val();
+		var parentName = $(obj).parent().find(".classname").first().val();
+		$("#addtripsd").html("添加二级分类");
+		$("#parentid").val(parentid);
+		$("#parentname").html(parentName);
+		$("#currentid").val(-1);
+		$("#myModalClass").modal('show');
+	}
+
+	function editfirst(obj) {
+		var parentid = $(obj).parent().siblings().first().find(".classid").first().val();
+		var parentName = $(obj).parent().siblings().first().find(".classname").first().val();
+		var currentid = $(obj).parent().find(".classid").first().val();
+		var currentname = $(obj).parent().find(".classname").first().val();
+		$("#addtripsd").html("编辑一级分类");
+		$("#currentid").val(currentid);
+		$("#currentname").val(currentname);
+		$("#myModalClass").modal('show');
+	}
+
+	function editsecond(obj) {
+		var parentid = $(obj).parent().siblings().first().find(".classid").first().val();
+		var parentName = $(obj).parent().siblings().first().find(".classname").first().val();
+		var currentid = $(obj).parent().find(".classid").first().val();
+		var currentname = $(obj).parent().find(".classname").first().val();
+		$("#addtripsd").html("编辑二级分类");
+		$("#parentid").val(parentid);
+		$("#parentname").html(parentName);
+		$("#currentid").val(currentid);
+		$("#currentname").val(currentname);
+		$("#myModalClass").modal('show');
+	}
+
+	function editerji() {
+		var currentid = $("#currentid").val();
+		var parentid = $("#parentid").val();
+		var erjiname = $("#currentname").val();
+
+		if (currentid == -1) {
+			var url = '__URL__/AddClass';
+			var callback = function(data) {
+				if (data.status == 1) {
+					location.reload();
+				}
+			};
+			var postdata = {
+				isparent: 0,
+				classname: erjiname,
+				parentclass: parentid
+			};
+			ajaxExecute(url, callback, postdata);
+		} else {
+			var url = '__URL__/EditClassname';
+			var callback = function(data) {
+				if (data.status == 1) {
+					location.reload();
+				}
+			};
+			var postdata = {
+				classid: currentid,
+				isparent: 0,
+				classname: erjiname,
+				parentclass: parentid
+			};
+			ajaxExecute(url, callback, postdata);
+		}
+	}
+
+	function deleteclass(obj) {
+		if (confirm("删除分类，之前此分类中的产品需要重新编辑分类，是否确定？")) {
+			var currentid = $(obj).parent().find(".classid").first().val();
+			var isparent = $(obj).parent().find(".isparent").first().val();
+			var url = '__URL__/DeleteClass';
+			var callback = function(data) {
+				if (data.status == 1) {
+					location.reload();
+				}
+			};
+			var postdata = {
+				currentid: currentid,
+				isparent: isparent
+			};
+			ajaxExecute(url, callback, postdata);
+		}
+	}
+	$(function() {
+		$("#myModalClass").on('hidden.bs.modal', function(e) {
+			$("#addtripsd").html("");
+			$("#parentid").val("");
+			$("#parentname").html("");
+			$("#currentid").val("");
+			$("#currentname").val("");
+		});
+		$("#myModalBrand").on('hidden.bs.modal', function(e) {
+			$("#modbrandid").val("");
+			$("#modbrandname").val("");
+		});
+	});
+</script>

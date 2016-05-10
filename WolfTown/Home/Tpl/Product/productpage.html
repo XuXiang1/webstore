@@ -1,0 +1,18 @@
+{__NOLAYOUT__}
+<volist name="ProductList" id="data" empty="$empty">
+
+	<div class="grid1_of_4">
+		<div class="content_box">
+			<div style="height: 160px;">
+
+				<a href="__URL__/productdetail/PID/<{$data.ID}>">
+				<img style="width: 190px;height: 160px;" src="__PUBLIC__/UploadFiles/xiaotu/<{$data.frontimg}>" class="img-responsive" alt="" />
+			</a></div>
+			<h4 style="margin-top: 4px;"><a href="__URL__/productdetail/PID/<{$data.ID}>"> <{$data.Name|msubstr=0,30}></a></h4>
+			<p>
+				<{$data.Overview|msubstr=0,20}>
+			</p>
+		</div>
+	</div>
+</volist>
+<input type="hidden" id="mydatacount" name="name" value="<{$ProductCount}>" />

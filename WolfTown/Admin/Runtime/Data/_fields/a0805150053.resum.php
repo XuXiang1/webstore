@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'RID', 1 => 'FileName', 2 => 'JobID', 3 => 'UploadTime', 4 => 'Uploader', 5 => 'Email', 6 => 'IsRead', '_autoinc' => true, '_pk' => 'RID', '_type' => array ( 'RID' => 'int(11)', 'FileName' => 'text', 'JobID' => 'int(11)', 'UploadTime' => 'datetime', 'Uploader' => 'text', 'Email' => 'text', 'IsRead' => 'int(11)', ), );?>

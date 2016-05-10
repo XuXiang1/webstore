@@ -1,0 +1,65 @@
+<extend name="Public:Layout" />
+<block name="head">
+	<link href="__CSS__/datouwang.css" rel="stylesheet" type="text/css" media="all" />
+
+</block>
+<block name="content">
+	<div class="container">
+		<div class="women_main">
+			<!-- start content -->
+			<div class="row single">
+				<div class="col-md-12 det">
+					<div class="single_left">
+
+						<div class="page images_3_of_2">
+							<div class="sp-wrap">
+								<volist name="productimgdata" id="data1">
+									<a href="__PUBLIC__/UploadFiles/ProductImage/<{$data1['imgsrc']}>"><img src="__PUBLIC__/UploadFiles/ProductImage/<{$data1['imgsrc']}>" alt=""></a>
+								</volist>
+							</div>
+						</div>
+
+						<div class="desc1 span_3_of_2">
+							<h3><{$productdata['Name']}></h3>
+							<span class="brand"><b>品&nbsp;&nbsp;&nbsp;&nbsp;牌:</b>&nbsp;&nbsp;&nbsp;<{$productdata['brandname']}></span>
+							<br>
+							<span class="brand"><b>分&nbsp;&nbsp;&nbsp;&nbsp;类:</b>&nbsp;&nbsp;&nbsp;</span><span><{$productdata['parentclassname']}>|</span><span><{$productdata['childclassname']}></span>
+							<br />
+							<br />
+							<span class="code"><{$productdata['Overview']}>
+							</span>
+
+						</div>
+						<div class="clearfix"></div>
+					</div>
+					<div class="single-bottom1">
+						<{$productdata[ 'Description']}>
+					</div>
+					<div class="single-bottom2">
+						<h6>产品推荐</h6>
+
+						<volist name="rndspots" id="data2">
+							<div class="product">
+								<div class="product-desc">
+									<div class="product-img">
+										<img src="__PUBLIC__/UploadFiles/ProductImage/<{$data2['frontimg']}>" style="max-width: 300px;max-height: 110px;" class="img-responsive " alt="" />
+									</div>
+									<div class="prod1-desc">
+										<h5><a class="product_link" href="__URL__/productdetail/PID/<{$data2['ID']}>"><{$data2['Name']}></a></h5>
+										<p class="product_descr"> <{$data2['Overview']}> </p>
+									</div>
+									<div class="clearfix"></div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+						</volist>
+
+					</div>
+				</div>
+				<div class="clearfix"></div>
+			</div>
+			<!-- end content -->
+		</div>
+	</div>
+	<script type="text/javascript" src="__JS__/smoothproducts.js"></script>
+</block>

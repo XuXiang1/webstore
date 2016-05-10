@@ -1,0 +1,11 @@
+{__NOLAYOUT__}
+<volist name="MessageList" id="data" key="k">
+<tr>
+	<td><{$data.ID}></td>
+	<td><{$data.Name}></td>
+	<td><{$data.Email}></td>
+	<td><{$data.Message}></td>
+	<td><{$data.PostTime}></td>
+</tr>
+<input type="hidden" id="mydatacount" name="name" value="<{$MessageCount}>" />
+</volist>

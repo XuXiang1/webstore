@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'ID', 1 => 'Name', 2 => 'PointX', 3 => 'PointY', 4 => 'Address', 5 => 'Email', 6 => 'Phone', 7 => 'Fax', '_autoinc' => false, '_type' => array ( 'ID' => 'int(11)', 'Name' => 'text', 'PointX' => 'text', 'PointY' => 'text', 'Address' => 'text', 'Email' => 'text', 'Phone' => 'text', 'Fax' => 'text', ), );?>

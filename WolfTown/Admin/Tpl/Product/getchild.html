@@ -1,0 +1,31 @@
+{__NOLAYOUT__}
+<if condition="$childdata|count lt 0">
+
+	<if condition="empty($childname)">
+		<input type="hidden" name="childclassid" id="childclassid" value="<{$childdata[0][ID]}>" />
+		<input type="hidden" name="childclassname" id="childclassname" value="<{$childdata[0][classname]}>" />
+		<button class="btn btn-default dropdown-toggle" style="width:130px" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			<span id="childclassnametext">
+													<{$childdata[0][classname]}>
+									<span class="caret"></span>
+		</button>
+		<else />
+		<input type="hidden" name="childclassid" id="childclassid" value="<{$childid}>" />
+		<input type="hidden" name="childclassname" id="childclassname" value="<{$childname}>" />
+		<button class="btn btn-default dropdown-toggle" style="width:130px" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+			<span id="childclassnametext">
+													<{$childname}>
+									<span class="caret"></span>
+		</button>
+
+	</if>
+	<ul class="dropdown-menu" aria-labelledby="dropdownMenu7" style="min-width: 130px !important;">
+		<volist name="childdata" id="datac">
+			<li>
+				<a href="javascript:void(0)" onclick="selectchild(<{$datac[ID]}>,this)">
+					<{$datac[classname]}>
+				</a>
+			</li>
+		</volist>
+	</ul>
+</if>

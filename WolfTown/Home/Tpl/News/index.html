@@ -1,0 +1,63 @@
+<extend name="Public:Layout" />
+<block name="head"></block>
+<block name="content">
+	<div style="display: block; width: 100%; text-align: center;" id="loadingImage">
+	</div>
+	<div class="container" style="margin-bottom: 20px;margin-top: 0;">
+
+		<div  id="myNewsList">
+
+		</div>
+		<div id="Pagination" class="m-pagination" style="padding-left: 15px;">
+		</div>
+	</div>
+
+	<script>
+		$(function() {
+			startPaging(0, 3);
+		});
+		 // var com = { "index": "首页", "product": "产品和服务", "productdetail": "产品详细", "blog": "新闻活动", "blogdetail": "新闻详细", "aboutus": "关于我们", "contactus": "联系我们", "job": "人才招聘", "member": "会员", "jobdetail": "职位信息", "emailcheck": "邮箱验证", "login": "登陆", "passwordreset": "重置密码", "register": "注册", "resetpassword": "重置密码" }
+		function startPaging(page_index, flag) {
+			var url = '__URL__/newspage';
+			var postdata = {
+				PageIndex: page_index + 1
+			};
+			$("#myNewsList").html("");
+			AjaxStart($("#loadingImage"));
+			$.ajax({
+				type: "POST",
+				cache: false,
+				url: url,
+				data: postdata,
+				processData: true,
+				success: function(data) {
+					AjaxStop($("#loadingImage"));
+					$("#myNewsList").html(data);
+					var pagecount = parseInt($("#mydatacount").val());
+					if (flag != 3) {
+						$("#Pagination").page('destroy');
+					}
+					$("#Pagination").page({
+						debug: true,
+						total: pagecount,
+						pageSize: 10,
+						firstBtnText: '首页',
+						lastBtnText: '尾页',
+						prevBtnText: '上一页',
+						nextBtnText: '下一页',
+						showInfo: true,
+						jumpBtnText: '跳转',
+						showPageSizes: true,
+						mypageclass: 'm-pagination-page',
+						infoFormat: '{start} ~ {end}条，共{total}条',
+						mypageindex: page_index
+					}).on("pageClicked", function(event, pageIndex) {
+						console.log(pageIndex);
+						startPaging(pageIndex)
+					});
+				},
+				error: function(ex) {}
+			});
+		}
+	</script>
+</block>

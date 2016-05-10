@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'ID', 1 => 'Name', 2 => 'Email', 3 => 'Message', 4 => 'PostTime', 5 => 'IsRead', '_autoinc' => true, '_pk' => 'ID', '_type' => array ( 'ID' => 'int(11)', 'Name' => 'text', 'Email' => 'text', 'Message' => 'text', 'PostTime' => 'datetime', 'IsRead' => 'int(11)', ), );?>

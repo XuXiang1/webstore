@@ -1,0 +1,156 @@
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="javascript: location.reload();" class="btn btn-grey"><i
+                        class="glyphicon glyphicon-refresh"></i>刷新</a> <a href="__URL__/editnews" class="btn"><i
+                                class="glyphicon glyphicon-plus icon-white"></i>添加新闻</a>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">新闻编号</th>
+                                <th>新闻标题</th>
+                                 <th>简介</th>
+                                <th style="width: 80px;">首页显示</th>
+                                <th style="width: 80px;">显示状态</th>
+                                <th style="width: 120px;">修改日期</th>
+                                <th style="width: 280px;">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myNewsList">
+                        </tbody>
+                    </table>
+                    <div style="display: block; width: 100%; text-align: center;"
+                        id="loadingImage">
+                    </div>
+                    <div id="Pagination" class="m-pagination"
+                        style="padding-left: 15px;">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+    $(function () {
+        startPaging(0, 3);
+    });
+
+
+   // var com = { "index": "首页", "product": "产品和服务", "productdetail": "产品详细", "blog": "新闻活动", "blogdetail": "新闻详细", "aboutus": "关于我们", "contactus": "联系我们", "job": "人才招聘", "member": "会员", "jobdetail": "职位信息", "emailcheck": "邮箱验证", "login": "登陆", "passwordreset": "重置密码", "register": "注册", "resetpassword": "重置密码" }
+
+    function startPaging(page_index, flag) {
+        var url = '__URL__/newspage';
+        var postdata = {
+            PageIndex: page_index + 1
+        };
+        $("#myNewsList").html("");
+        AjaxStart($("#loadingImage"));
+        $.ajax({
+            type: "POST",
+            cache: false,
+            url: url,
+            data: postdata,
+            processData: true,
+            success: function (data) {
+                AjaxStop($("#loadingImage"));
+                $("#myNewsList").html(data);
+                var pagecount = parseInt($("#mydatacount").val());
+                if (flag != 3) {
+                    $("#Pagination").page('destroy');
+                }
+                $("#Pagination").page({
+                    debug: true,
+                    total: pagecount,
+                    pageSize: 10,
+                    firstBtnText: '首页',
+                    lastBtnText: '尾页',
+                    prevBtnText: '上一页',
+                    nextBtnText: '下一页',
+                    showInfo: true,
+                    jumpBtnText: '跳转',
+                    showPageSizes: true,
+                    mypageclass: 'm-pagination-page',
+                    infoFormat: '{start} ~ {end}条，共{total}条',
+                    mypageindex: page_index
+                }).on("pageClicked", function (event, pageIndex) {
+                    console.log(pageIndex);
+                    startPaging(pageIndex)
+                });
+            },
+            error: function (ex) {
+
+            }
+        });
+    }
+    
+
+    function DeleteNews(jsonobj) {
+        if (confirm("是否删除，请确认")) {
+            var objt = JSON.parse($(jsonobj).siblings(".pdata").html());
+            var url = '__URL__/DeleteNews';
+            var callback = function (data) {
+                if (data.status == 1) {
+                	myAlert("新闻已删除","refresh");
+                }
+            };
+            var postdata = {
+                ID: objt.ID
+            };
+            ajaxExecute(url, callback, postdata);
+        }
+    }
+
+    function ChangeStatue(jsonobj) {
+        var objt = JSON.parse($(jsonobj).siblings(".pdata").html());
+        var url = '__URL__/ChangeStatue';
+        if (objt.Status == 0) {
+            objt.Status = 1;
+        } else {
+            objt.Status = 0;
+        }
+        var callback = function (data) {
+            if (data.status == 1) {
+                if (objt.Status == 1) {
+                	myAlert("新闻已上线","refresh");
+                } else {
+                	myAlert("新闻已下线","refresh");
+                }
+            }
+        };
+        var postdata = objt;
+        ajaxExecute(url, callback, postdata);
+    }
+
+    function ChangeShow(jsonobj) {
+        var objt = JSON.parse($(jsonobj).siblings(".pdata").html());
+        var url = '__URL__/ChangeShow';
+        if (objt.ShowHome == 0) {
+            objt.ShowHome = 1;
+        } else {
+            objt.ShowHome = 0;
+        }
+        var callback = function (data) {
+            if (data.status == 1) {
+                if (objt.ShowHome == 1) {
+                	myAlert("新闻已在首页显示","refresh");
+                } else {
+                	myAlert("新闻不在首页显示","refresh");
+                }
+            }
+        };
+        var postdata = objt;
+        ajaxExecute(url, callback, postdata);
+    }
+</script>
+

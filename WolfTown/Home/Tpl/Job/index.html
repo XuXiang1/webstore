@@ -1,0 +1,60 @@
+<extend name="Public:Layout" />
+<block name="head"></block>
+<block name="content">
+	<div class="container">
+		<div class="row job-div">
+			<!-- Open Vacancies List -->
+			<div class="col-md-8">
+				<table class="jobs-list">
+					<tbody>
+						<tr>
+							<th>职位</th>
+							<th>工作地点</th>
+							<th>薪资</th>
+						</tr>
+						<volist name="joblist" id="data">
+							<tr>
+								<td class="job-position">
+									<a href="__ROOT__/Job/jobdetail/jid/<{$data.ID}>">
+										<{$data.JobName}>
+									</a>
+									<td class="job-location">
+										<div class="job-country">
+											<{$data.joblocation|msubstr=0,20}>
+										</div>
+									
+									</td>
+									<td class="job-type hidden-phone">
+										<{$data.Pay}>
+									</td>
+							</tr>
+						</volist>
+					</tbody>
+				</table>
+			</div>
+			<!-- End Open Vacancies List -->
+			<!-- Sidebar -->
+			<div class="col-md-4 col-sm-6">
+				<div class="join-us-promo">
+					<!-- Quote -->
+					<div class="join-us-bubble">
+						<blockquote>
+							<p class="quote">
+								<{$jobwelcome.JOBWELCOMETEXT1}>
+							</p>
+							<cite class="author-info"><{$jobwelcome.JOBWELCOMETEXT2}><br>
+                                <{$jobwelcome.JOBWELCOMETEXT3}>
+                            </cite>
+						</blockquote>
+						<div class="sprite arrow-speech-bubble"></div>
+					</div>
+					<!-- Team Member Photo -->
+					<div class="author-photo">
+						<img src="__PUBLIC__/UploadFiles/JobWelcome/<{$jobwelcome.JOBWELCOMEIMAGE}>" alt="Name Surname">
+					</div>
+				</div>
+			</div>
+			<!-- End Sidebar -->
+		</div>
+	</div>
+</block>

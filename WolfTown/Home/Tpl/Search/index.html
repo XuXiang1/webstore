@@ -1,0 +1,47 @@
+<extend name="Public:Layout" />
+<block name="head"></block>
+<block name="content">
+	<div class="container" style="margin-bottom: 20px;margin-top: 0;">
+
+		<div id="myNewsList">
+
+			<volist name="ProductList" id="data1">
+
+				<div class="row news-div">
+					<div class="col-sm-4">
+						<div class="service-image" style="text-align: center;">
+							<a href="__ROOT__/product/productdetail/PID/<{$data1.ID}>"><img src="__PUBLIC__/UploadFiles/xiaotu/<{$data1.frontimg}>" style="max-height: 110px;max-width: 300px;" alt="Color Schemes"></a>
+						</div>
+					</div>
+					<div class="col-sm-8">
+						<h3><a href="__ROOT__/product/productdetail/PID/<{$data1.ID}>"><{$data1.Name}></a></h3>
+						<p>
+							<{$data1.Overview}>
+						</p>
+
+					</div>
+				</div>
+
+			</volist>
+			<volist name="NewsList" id="data">
+
+				<div class="row news-div">
+					<div class="col-sm-4">
+						<div class="service-image" style="text-align: center;">
+							<a href="__ROOT__/news/blogdetail/BID/<{$data.ID}>"><img src="__PUBLIC__/UploadFiles/NewsImage/<{$data.TitleImage}>" style="max-height: 110px;max-width: 300px;" alt="Color Schemes"></a>
+						</div>
+					</div>
+					<div class="col-sm-8">
+						<h3><a href="__ROOT__/news/blogdetail/BID/<{$data.ID}>"><{$data.ODate}>   &nbsp;&nbsp;<{$data.Name}></a></h3>
+						<p>
+							<{$data.OverView}>
+						</p>
+
+					</div>
+				</div>
+
+			</volist>
+
+		</div>
+	</div>
+</block>

@@ -1,0 +1,122 @@
+<extend name="Public:Layout" />
+<block name="head">
+	<script>
+		$(function() {
+			var pid = '<{$pid}>';
+			if (pid != "") {
+				$('html, body').stop().animate({
+					scrollTop: $('#' + pid).offset().top
+				}, 1000);
+			}
+		})
+	</script>
+</block>
+<block name="content">
+	<div class="container " style="margin-bottom: 30px;margin-top: 15px;">
+		<div class="row wen-div">
+			<div class="col-md-12 aboutusdiv">
+				<div class="jianjie-title">
+					<p style="font-size: 30px;color: #333333;text-align: center;font-weight: 600;">狼者，群动之族。</p>
+					<p style="font-size: 18px;color: #333333;text-align: center;padding: 10px 0 10px 0;font-weight: 600;padding-bottom: 35px;">公司将以严格有序的团队协作和专业、专注的态度务于广大消费者。</p>
+				</div>
+				<div class="subtitle_c" id="company_profile">
+					<span style=";font-size: 18px;"><span style="font-size: 20px;">C</span>ompany profile&nbsp;&nbsp;&nbsp;&nbsp;公司简介</span>
+				</div>
+
+				<div class="jianjie">
+					<{$initdata.profile}>
+
+				</div>
+			</div>
+		</div>
+		<div class="row wen-div">
+			<div class="col-md-12 aboutusdiv" id="company_shop">
+				<div class="subtitle_c">
+					<span style=";font-size: 18px;"><span style="font-size: 20px;">W</span>olf town shop&nbsp;&nbsp;&nbsp;&nbsp;狼堡店铺</span>
+				</div>
+
+			</div>
+		</div>
+		<div class="row aboutus-dianpu wen-div" style="padding: 10px;">
+			<volist name="memberdata" id="datak">
+				<div class="col-md-4">
+					<div class="aboutuslist">
+						<img src="__PUBLIC__/UploadFiles/MemberImage/<{$datak['imgsrc']}>" style="width: 320px;" />
+						<h2><{$datak['name']}></h2>
+						<p>
+							<{$datak[ 'location']}>
+						</p>
+						<div class="create_btn aboutus-btn">
+							<a href="__ROOT__/join">立即加盟</a>
+						</div>
+					</div>
+				</div>
+			</volist>
+
+		</div>
+
+		<div class="row wen-div">
+			<div class="col-md-12 aboutusdiv">
+				<div class="subtitle_c" id="company_history">
+					<span style=";font-size: 18px;"><span style="font-size: 20px;">H</span>istory&nbsp;&nbsp;&nbsp;&nbsp;公司发展历程</span>
+				</div>
+				<div class="jianjie">
+					<{$initdata.history}>
+
+				</div>
+			</div>
+		</div>
+		<div class="row wen-div">
+			<div class="col-md-12 aboutusdiv">
+				<div class="subtitle_c" id="company_competence">
+					<span style=";font-size: 18px;"><span style="font-size: 20px;">C</span>ore competence&nbsp;&nbsp;&nbsp;&nbsp;核心竞争力</span>
+				</div>
+
+				<div class="jianjie">
+					<{$initdata.competence}>
+				</div>
+			</div>
+		</div>
+		<div class="row wen-div">
+			<div class="col-md-12 aboutusdiv">
+				<div class="subtitle_c" id="company_honor">
+					<span style=";font-size: 18px;"><span style="font-size: 20px;">H</span>onor &nbsp;&nbsp;&nbsp;&nbsp;公司荣誉</span>
+				</div>
+				<div class="jianjie">
+					<{$initdata.honor}>
+
+				</div>
+			</div>
+		</div>
+		<div class="row wen-div">
+			<div class="col-md-12 aboutusdiv">
+				<div class="subtitle_c" id="company_team">
+					<span style=";font-size: 18px;"><span style="font-size: 20px;">C</span>ore team&nbsp;&nbsp;&nbsp;&nbsp;核心团队</span>
+				</div>
+				<div class="jianjie">
+					<volist name="data2" id="data">
+						<div class="col-md-4 col-sm-6">
+							<div class="team-member">
+								<!-- Team Member Photo -->
+								<div class="team-member-image">
+									<img src="<{$data->image}>" alt="Name Surname">
+								</div>
+								<div class="team-member-info">
+									<ul>
+										<!-- Team Member Info & Social Links -->
+										<li class="team-member-name">
+											<{$data->name}></li>
+										<li>
+											<{$data->posigion}></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</volist>
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+</block>

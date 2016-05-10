@@ -1,0 +1,4 @@
+[ 2015-11-13T14:04:47+08:00 ] 112.22.255.29 /WolfTown/admin.php/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+

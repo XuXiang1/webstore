@@ -1,0 +1,103 @@
+<div class="section">
+	<div class="container">
+		<div class="row">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a href="javascript: location.reload();" class="btn btn-grey"><i
+                        class="glyphicon glyphicon-refresh"></i>刷新</a><a href="__URL__/EditProduct" style="margin-left: 4px;" class="btn"><i
+                                class="glyphicon glyphicon-plus icon-white"></i>添加产品</a>
+
+					<a href="__URL__/editclass" class="btn"><i
+                                class="glyphicon glyphicon-list-alt"></i>产品分类</a>
+				</div>
+				<div class="panel-body">
+					<table class="table table-hover">
+						<thead>
+							<tr>
+								<th style="width:100px;">产品ID</th>
+								<th style="width:180px;">产品名称</th>
+								
+								<th style="width:180px;">分类</th>
+								<th style="width:180px;">品牌</th>
+								
+								<th style="width:180px;">修改日期</th>
+								<th style="width:320px;">操作</th>
+							</tr>
+						</thead>
+						<tbody id="myProductList">
+						</tbody>
+					</table>
+					<div style="display: block; width: 100%; text-align: center;" id="loadingImage">
+					</div>
+					<div id="Pagination" class="m-pagination" style="padding-left: 15px;">
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(function() {
+		startPaging(0, 3);
+	});
+
+	function DeleteProduct(jsonobj) {
+		if (confirm("是否删除，请确认")) {
+			var objt = JSON.parse($(jsonobj).siblings(".pdata").html());
+			var url = '__URL__/DeleteProduct';
+			var callback = function(data) {
+				if (data.status == 1) {
+					myAlert("产品已删除", "refresh");
+				}
+			};
+			var postdata = {
+				ID: objt.ID
+			};
+			ajaxExecute(url, callback, postdata);
+		}
+	}
+
+	function startPaging(page_index, flag) {
+		var url = '__URL__/productpage';
+		var postdata = {
+			PageIndex: page_index + 1
+		};
+		$("#myProductList").html("");
+		AjaxStart($("#loadingImage"));
+		$.ajax({
+			type: "POST",
+			cache: false,
+			url: url,
+			data: postdata,
+			processData: true,
+			success: function(data) {
+				AjaxStop($("#loadingImage"));
+				$("#myProductList").html(data);
+				var pagecount = parseInt($("#mydatacount").val());
+				if (flag != 3) {
+					$("#Pagination").page('destroy');
+				}
+				$("#Pagination").page({
+					debug: true,
+					total: pagecount,
+					pageSize: 10,
+					firstBtnText: '首页',
+					lastBtnText: '尾页',
+					prevBtnText: '上一页',
+					nextBtnText: '下一页',
+					showInfo: true,
+					jumpBtnText: '跳转',
+					showPageSizes: true,
+					infoFormat: '{start} ~ {end}条，共{total}条',
+					mypageindex: page_index
+				}).on("pageClicked", function(event, pageIndex) {
+					console.log(pageIndex);
+					startPaging(pageIndex)
+				});
+			},
+			error: function(ex) {}
+		});
+	}
+</script>

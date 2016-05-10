@@ -1,0 +1,20 @@
+{__NOLAYOUT__}
+<volist name="JobList" id="data">
+<tr>
+	<td><{$data.JobName|msubstr=0,10}></td>
+	<td><{$data.joblocation|msubstr=0,10}></td>
+	<td><{$data.Pay}></td>
+	<td><{$data.EditDate}></td>
+	<td><{$data['Status']==0 ? '未上线' : '在线显示'}> </td>
+	<td><{$data.resumisread|mifnull=0}>/<{$data.resumtotal|mifnull=0}></td>
+	<td>
+		<a href="javascript: void(0);" onclick="lookresum(<{$data.ID}>)" class="btn btn-grey" style="padding:4px 6px;"><span class="glyphicon glyphicon-search" style="padding-right:4px;" aria-hidden="true"></span>查看简历</a>
+		<a href="#" class="btn btn-grey btn-sm event-more" onclick="EditJob(this)">编辑</a>
+		<a href="#" class="btn btn-grey btn-sm event-more" onclick="ChangeStatue(this)"><{$data['Status']==0?'上线':'下线'}></a>
+		<a href="#" class="btn btn-grey btn-sm event-more" onclick="DeleteJob(this)">删除</a>
+				<p style="display: none" class="pdata"><{$data|json_encode}></p>
+	</td>
+	
+</tr>
+</volist>
+<input type="hidden" id="mydatacount" name="name" value="<{$JobCount}>" />

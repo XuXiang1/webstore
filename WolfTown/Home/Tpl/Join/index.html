@@ -1,0 +1,45 @@
+<extend name="Public:Layout" />
+<block name="head">
+
+</block>
+<block name="content">
+	<div class="container " style="margin-bottom: 30px;margin-top: 15px;">
+
+
+		<div class="row wen-div">
+			<div class="col-md-12 aboutusdiv" style="padding-top: 0;">
+				<div class="subtitle_c" id="company_history">
+					<span style=";font-size: 18px;"><span style="font-size: 20px;">J</span>oin us&nbsp;&nbsp;&nbsp;&nbsp;加盟狼堡</span>
+				</div>
+				<div class="jianjie">
+					<{$initdata.content}>
+
+				</div>
+			</div>
+		</div>
+		<div class="row wen-div">
+			<div class="col-md-12 aboutusdiv" id="company_shop">
+				<div class="subtitle_c">
+					<span style=";font-size: 18px;"><span style="font-size: 20px;">W</span>olf town shop&nbsp;&nbsp;&nbsp;&nbsp;狼堡店铺</span>
+				</div>
+
+			</div>
+		</div>
+		<div class="row aboutus-dianpu wen-div" style="padding: 10px;">
+			<volist name="memberdata" id="datak">
+				<div class="col-md-4">
+					<div class="aboutuslist">
+						<img src="__PUBLIC__/UploadFiles/MemberImage/<{$datak['imgsrc']}>" style="width: 320px;" />
+						<h2><{$datak['name']}></h2>
+						<p>
+							<{$datak[ 'location']}>
+						</p>
+						
+					</div>
+				</div>
+			</volist>
+
+		</div>
+
+	</div>
+</block>

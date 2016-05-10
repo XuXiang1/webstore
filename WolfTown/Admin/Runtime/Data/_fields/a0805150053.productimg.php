@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'ID', 1 => 'imgsrc', 2 => 'OrderID', 3 => 'pid', '_autoinc' => true, '_pk' => 'ID', '_type' => array ( 'ID' => 'int(11)', 'imgsrc' => 'text', 'OrderID' => 'text', 'pid' => 'int(11)', ), );?>

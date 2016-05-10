@@ -1,0 +1,16 @@
+{__NOLAYOUT__}
+<volist name="ResumList" id="data">
+<tr>
+	<td><{$data.RID}></td>
+	<td><{$data.Uploader|}></td>
+	<td><{$data.JobName}></td>
+	<td><{$data.Email}></td>
+	<td><{$data['IsRead'] == 1 ? '已下载':'未下载'}></td>
+	<td><{$data.UploadTime}></td>
+	<td><a href="__PUBLIC__/UploadFiles/Resum/<{$data.FileName}>" class="btn btn-default" onclick="ChangeReStatue(<{$data.RID}>,<{$data.IsRead}>)"
+		style="padding: 4px 6px;"><span
+			class="glyphicon glyphicon-floppy-save"></span>&nbsp;&nbsp;下&nbsp;&nbsp;载</a></td>
+</tr>
+</volist>
+<input type="hidden" id="myresumdatacount" name="name"
+	value="<{$ResumCount}>" />

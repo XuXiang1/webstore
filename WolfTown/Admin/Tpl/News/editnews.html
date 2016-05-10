@@ -1,0 +1,213 @@
+<div class="section">
+	<div class="container">
+		<!-- Modal -->
+		<div class="row">
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a href="javascript: location.reload();" class="btn btn-grey"><i
+                        class="glyphicon glyphicon-refresh"></i>刷新</a>
+					<a href="__URL__/index" class="btn btn-grey"><i class="glyphicon glyphicon-arrow-left"></i>返回</a>
+				</div>
+				<div class="panel-body">
+
+					<label for="file_upload">
+						<b>新闻标题图片</b></label>
+					<form id="mynewsform" action="__URL__/AddNews" method="post">
+						<input type="hidden" name="NID" value="<{$nid}>" />
+						<input type="hidden" name="NStatues" value="<{$newsdata['Status']}>" />
+						<div class="form-group">
+							<div class="row">
+								<div class="col-lg-6">
+									<img src="__PUBLIC__/UploadFiles/NewsImage/<{$newsdata['TitleImage']}>" id="productImg" style="width: 100%" alt="请上传图片" />
+									<input type="hidden" name="TitleImage" id="myimgfilename" value="<{$newsdata['TitleImage']}>" />
+								</div>
+								<div class="col-lg-6">
+									<input type="file" name="file_upload" id="file_upload" />
+									<div id="queue"></div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="NewsName"><b>新闻标题</b></label>
+							<input class="form-control" name="NewsName" type="text" placeholder="" value="<{$newsdata['Name']}>">
+						</div>
+						<div class="form-group">
+							<label for="NewsDate"><b>发生日期</b></label>
+							<div class="input-group date form_date col-md-5" data-date="" data-date-format="dd MM yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+								<input class="form-control" name="NewsDate" size="16" type="text" value="<{$newsdata['ODate']}>" readonly>
+								<span class="input-group-addon"><span
+                                class="glyphicon glyphicon-remove"></span></span><span class="input-group-addon"><span
+                                        class="glyphicon glyphicon-calendar"></span></span>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="NewsOverView"><b>简介</b></label>
+							<input class="form-control" name="NewsOverView" type="text" placeholder="" value="<{$newsdata['OverView']}>">
+						</div>
+						<div class="form-group">
+							<label for="NewsContent"><b>内容</b></label>
+							<div id="NewsContent1" style="display: none;">
+								<{$newsdata[ 'Content']}>
+							</div>
+							<textarea name="NewsContent" id="NewsContent" style=" visibility: hidden;">
+								
+							</textarea>
+						</div>
+						<div class="clearfix"></div>
+						<div class="clearfix"></div>
+						<button type="button" class="btn btn-primary pull-right" onclick="SaveChanges()">
+							提交</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script charset="utf-8" src="__PUBLIC__/KingEditor/kindeditor-all-min.js"></script>
+<script charset="utf-8" src="__PUBLIC__/KingEditor/zh-CN.js"></script>
+<script charset="utf-8" src="__PUBLIC__/KingEditor/code/prettify.js"></script>
+<script src="__JS__/uploadify/jquery.uploadify.js"></script>
+<script src="__JS__/bootstrap-datetimepicker.js"></script>
+<script>
+	$(function() {
+		$('#file_upload')
+			.uploadify({
+				auto: true,
+				buttonCursor: 'hand',
+				buttonImage: '__JS__/uploadify/img/browse-btn.png',
+				buttonText: '<div>选择文件</div>',
+				debug: false,
+				fileObjName: 'Filedata',
+				fileSizeLimit: imgfilemax,
+				fileTypeExts: '*.jpg;*.png;*.gif;*.jpeg',
+				fileTypeDesc: 'All Files',
+				formData: {
+					currentroot: '__ROOT__/',
+					timestamp: '<{$timestamp}>',
+					token: '<{$unique_salt}>',
+					target: 'addnews'
+				},
+				height: 30,
+				width: 120,
+				itemTemplate: false,
+				method: 'post',
+				multi: false,
+				overrideEvents: [],
+				preventCaching: true,
+				progressData: 'percentage',
+				queueID: false,
+				queueSizeLimit: 999,
+				removeCompleted: true,
+				removeTimeout: 3,
+				requeueErrors: false,
+				successTimeout: 30,
+				swf: '__JS__/uploadify/uploadify.swf',
+				uploader: '__ROOT__/Admin/Common/uploadify.php',
+				uploadLimit: 10,
+				onCancel: function(file) {
+					console.log('The file' + file.name + 'was cancelled.')
+				},
+				onClearQueue: function(queueItemCount) {
+					console
+						.log(queueItemCount + 'file(s) were removed frome the queue')
+				},
+				onDestroy: function() {},
+				onDialogClose: function(queueData) {
+					console.log(queueData.filesSelected + '\n' + queueData.filesQueued + '\r\n' + queueData.filesReplaced + '\r\n' + queueData.filesCancelled + '\r\n' + queueData.filesErrored)
+				},
+				onDialogOpen: function() {},
+				onDisable: function() {},
+				onEnalbe: function() {},
+				onFallback: function() {},
+				onInit: function(instance) {
+					console.log('The queue ID is' + instance.settings.queueID)
+				},
+				onQueueComplete: function(queueData) {
+					console.log(queueData.uploadsSuccessful + '\n' + queueData.uploadsErrored)
+				},
+				onSelect: function(file) {
+					console.log(file.name)
+				},
+				onSelectError: function(file, errorCode, errorMsg) {
+					console.log(errorCode)
+					console.log(this.queueData.errorMsg)
+				},
+				onSWFReady: function() {},
+				onUploadComplete: function(file) {},
+				onUploadError: function(file, errorCode, erorMsg,
+					errorString) {},
+				onUploadProgress: function(file, bytesUploaded,
+					bytesTotal, totalBytesUploaded,
+					totalBytesTotal) {
+					$('#pregress').html(
+						'总共需要上传' + bytesTotal + '字节，' + '已上传' + totalBytesTotal + '字节')
+				},
+				onUploadStart: function(file) {
+					console.log('start update')
+				},
+				onUploadSuccess: function(file, response) {
+					if (response != 'Invalid') {
+						$("#myimgfilename").val(response);
+						response = '__PUBLIC__/UploadFiles/NewsImage/' + response;
+						$("#productImg").attr("src", response);
+					}
+					//PostData(response);
+				}
+			});
+		$('.form_date').datetimepicker({
+			language: 'cn',
+			weekStart: 1,
+			todayBtn: 1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0,
+			format: 'yyyy/mm/dd',
+		});
+	});
+	var edititem = ['source', '|', 'fullscreen', 'undo', 'redo', 'print', 'cut', 'copy', 'paste',
+		'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+		'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+		'superscript', '|', 'selectall', 'forecolor', 'fontname', 'fontsize', '|', 'bold',
+		'italic', 'underline', 'strikethrough', 'removeformat', '|', 'image', 'hr', 'emoticons', 'link', 'unlink', '|'
+	];
+	var editor1;
+	KindEditor.ready(function(K) {
+		editor1 = K.create('textarea[id="NewsContent"]', {
+			cssPath: '__PUBLIC__/KingEditor/code/prettify.css',
+			uploadJson: '__ROOT__/Admin/Common/upload_json.php',
+			fileManagerJson: '__ROOT__/Admin/Common/file_manager_json.php',
+			allowFileManager: true,
+			width: "100%",
+			height: "600px",
+			items: edititem,
+		});
+		prettyPrint();
+		editor1.html($("#NewsContent1").html());
+	});
+	var ProductObj = {
+		ID: "",
+		TitleImage: "",
+		Name: "",
+		ODate: "",
+		OverView: "",
+		Content: "",
+		Status: ""
+	};
+
+	function SaveChanges() {
+		if ($("[name='NewsName']").val().trim() == "") {
+			myAlert("请填写新闻标题！");
+			return false;
+		}
+		if ($("[name='TitleImage").val().trim() == "") {
+			myAlert("请上传一张图片！");
+			return false;
+		}
+		$("[name='NewsContent']").val(editor1.html());
+		$("#mynewsform").submit();
+	}
+</script>

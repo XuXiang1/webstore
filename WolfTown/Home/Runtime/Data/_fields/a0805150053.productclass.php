@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'ID', 1 => 'classname', 2 => 'parentclass', 3 => 'isparent', '_autoinc' => true, '_pk' => 'ID', '_type' => array ( 'ID' => 'int(11)', 'classname' => 'text', 'parentclass' => 'int(11)', 'isparent' => 'int(11)', ), );?>

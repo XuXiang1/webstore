@@ -1,0 +1,17 @@
+<extend name="Public:Layout" />
+<block name="head">
+</block>
+<block name="content">
+	<div class="container" style="margin-bottom: 20px;margin-top: 0;padding: 15px 30px 15px 30px;">
+		<h2 style="text-align: center;"><{$newsdata['Name']}></h2>
+		<h4 style="text-align: center;"><{$newsdata['ODate']}></h4>
+		<br />
+		<p>
+			<{$newsdata['OverView']}>
+		</p>
+		<br />
+		<div style="margin-bottom: 50px;">
+			<{$newsdata['Content']}>
+		</div>
+	</div>
+</block>

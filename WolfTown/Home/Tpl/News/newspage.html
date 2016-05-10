@@ -1,0 +1,20 @@
+{__NOLAYOUT__}
+<volist name="NewsList" id="data">
+
+	<div class="row news-div">
+		<div class="col-sm-4">
+			<div class="service-image" style="text-align: center;">
+				<a href="__URL__/blogdetail/BID/<{$data.ID}>"><img src="__PUBLIC__/UploadFiles/NewsImage/<{$data.TitleImage}>" style="max-height: 110px;max-width: 300px;" alt="Color Schemes"></a>
+			</div>
+		</div>
+		<div class="col-sm-8">
+			<h3><a href="__URL__/blogdetail/BID/<{$data.ID}>"><{$data.ODate}>   &nbsp;&nbsp;<{$data.Name}></a></h3>
+			<p>
+				<{$data.OverView}> 
+			</p>
+
+		</div>
+	</div>
+	
+</volist>
+<input type="hidden" id="mydatacount" name="name" value="<{$NewsCount}>" />

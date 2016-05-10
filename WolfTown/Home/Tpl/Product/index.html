@@ -1,0 +1,214 @@
+<extend name="Public:Layout" />
+<block name="head">
+	<script>
+		$(function() {
+			startPaging(0, 3);
+		});
+
+		function changeclass(obj) {
+
+				var d1v = 0;
+				var d2v = 0;
+				var d3v = 0;
+				$("[name='parent']").each(function() {
+					if ($(this)[0].checked) {
+						d1v = $(this).attr("pdata");
+					}
+				});
+				$("[name='child']").each(function() {
+					if ($(this)[0].checked) {
+						d2v = $(this).attr("pdata");
+					}
+				});
+				$("[name='brand']").each(function() {
+					if ($(this)[0].checked) {
+						d3v = $(this).attr("pdata");
+					}
+				});
+				if($(obj).attr("name")=="parent"){
+					d2v=0;
+				}
+				
+				var myurl = "__URL__/index";
+				if(d1v !=0 ){
+					myurl = myurl+"/d1/"+d1v
+				}
+				if(d2v !=0 ){
+					myurl = myurl+"/d2/"+d2v
+				}
+				if(d3v !=0 ){
+					myurl = myurl+"/d3/"+d3v
+				}
+				location.href = myurl;
+		
+		}
+
+		function startPaging(page_index, flag) {
+			var url = '__URL__/productpage';
+			var postdata = {
+				PageIndex: page_index + 1,
+				d1: <empty name = "parentid" > 0 <else /> <{$parentid}></empty> ,
+				d2: <empty name = "childid" > 0 <else /> <{$childid}></empty> ,
+				d3: <empty name = "brandid" > 0 <else /><{$brandid}></empty> ,
+			};
+			$("#myProductList").html("");
+			AjaxStart($("#loadingImage"));
+			$.ajax({
+				type: "POST",
+				cache: false,
+				url: url,
+				data: postdata,
+				processData: true,
+				success: function(data) {
+					AjaxStop($("#loadingImage"));
+					$("#myProductList").html(data);
+					var pagecount = parseInt($("#mydatacount").val());
+					$("#mytempcount").html(pagecount);
+					if (flag != 3) {
+						$("#Pagination").page('destroy');
+					}
+					$("#Pagination").page({
+						debug: true,
+						total: pagecount,
+						pageSize: 12,
+						firstBtnText: '首页',
+						lastBtnText: '尾页',
+						prevBtnText: '上一页',
+						nextBtnText: '下一页',
+						showInfo: true,
+						jumpBtnText: '跳转',
+						showPageSizes: true,
+						infoFormat: '{start} ~ {end}条，共{total}条',
+						mypageindex: page_index
+					}).on("pageClicked", function(event, pageIndex) {
+						console.log(pageIndex);
+						startPaging(pageIndex)
+					});
+				},
+				error: function(ex) {}
+			});
+		}
+	</script>
+</block>
+<block name="content">
+	<div class="container">
+		<div class="women_main">
+			<!-- start sidebar -->
+			<div class="col-md-3 s-d" style="padding-left: 2px;">
+				<div class="w_sidebar">
+					<section class="sky-form">
+						<h4>全部产品</h4>
+						<div class="row1 scroll-pane">
+							<div class="col col-4">
+								<volist name="parentdata" id="datap" key="j">
+									<label class="radio">
+										<if condition="empty($parentid)">
+											<if condition="$j eq 1">
+												<input type="radio" name="parent" checked="checked" pdata="<{$datap[ID]}>" onclick="changeclass(this)"><i></i>
+												<{$datap[classname]}>
+													<else />
+													<input type="radio" name="parent" pdata="<{$datap[ID]}>" onclick="changeclass(this)"><i></i>
+													<{$datap[classname]}>
+											</if>
+											<else />
+											<if condition="$parentid eq $datap[ID]">
+												<input type="radio" name="parent" checked="checked" pdata="<{$datap[ID]}>" onclick="changeclass(this)"><i></i>
+												<{$datap[classname]}>
+													<else />
+													<input type="radio" name="parent" pdata="<{$datap[ID]}>" onclick="changeclass(this)"><i></i>
+													<{$datap[classname]}>
+											</if>
+										</if>
+									</label>
+								</volist>
+							</div>
+						</div>
+					</section>
+					<section class="sky-form">
+						<h4>类别</h4>
+						<div class="row2 scroll-pane">
+							<div class="col col-4">
+								<volist name="childdata" id="datac" key="k">
+
+									<label class="radio">
+										<if condition="empty($childid)">
+											<if condition="$k eq 1">
+												<input type="radio" name="child" checked="checked" pdata="<{$datac[ID]}>" onclick="changeclass(this)"><i></i>
+												<{$datac[classname]}>
+													<else />
+													<input type="radio" name="child" pdata="<{$datac[ID]}>" onclick="changeclass(this)"><i></i>
+													<{$datac[classname]}>
+											</if>
+											<else />
+											<if condition="$childid eq $datac[ID]">
+												<input type="radio" name="child" checked="checked" pdata="<{$datac[ID]}>" onclick="changeclass(this)"><i></i>
+												<{$datac[classname]}>
+													<else />
+													<input type="radio" name="child" pdata="<{$datac[classid]}>" onclick="changeclass(this)"><i></i>
+													<{$datac[classname]}>
+											</if>
+										</if>
+									</label>
+								</volist>
+
+							</div>
+						</div>
+					</section>
+					<section class="sky-form">
+						<h4>品牌</h4>
+						<div class="row3 scroll-pane">
+							<div class="col col-4">
+								<volist name="branddata" id="datab" key="l">
+
+									<label class="radio">
+										<if condition="empty($brandid)">
+											<if condition="$l eq 1">
+												<input type="radio" name="brand" checked="checked" pdata="<{$datab[ID]}>" onclick="changeclass(this)"><i></i>
+												<{$datab[name]}>
+													<else />
+													<input type="radio" name="brand" pdata="<{$datab[ID]}>" onclick="changeclass(this)"><i></i>
+													<{$datab[name]}>
+											</if>
+											<else />
+											<if condition="$brandid eq $datab[ID]">
+												<input type="radio" name="brand" checked="checked" pdata="<{$datab[ID]}>" onclick="changeclass(this)"><i></i>
+												<{$datab[name]}>
+													<else />
+													<input type="radio" name="brand" pdata="<{$datab[ID]}>" onclick="changeclass(this)"><i></i>
+													<{$datab[name]}>
+											</if>
+										</if>
+									</label>
+								</volist>
+							</div>
+						</div>
+					</section>
+
+				</div>
+			</div>
+			<!-- start content -->
+			<div class="col-md-9 w_content gray-div">
+				<div class="women">
+					<a href="#"><h4><span>共 <span id="mytempcount">1</span> 件商品</span> </h4></a>
+					
+					<div class="clearfix"></div>
+				</div>
+								<!-- end grids_of_4 -->
+				<div style="display: block; width: 100%; text-align: center;" id="loadingImage">
+				</div>
+				<!-- grids_of_4 -->
+				<div class="grids_of_4 row" id="myProductList">
+
+				</div>
+
+				<div id="Pagination" class="m-pagination" style="padding-left: 15px;">
+				</div>
+
+			</div>
+
+			<div class="clearfix"></div>
+
+			<!-- end content -->
+		</div>
+	</div>
+</block>

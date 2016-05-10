@@ -1,0 +1,33 @@
+<extend name="Public:Layout" />
+<block name="head"></block>
+<block name="content">
+<div class="section">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="error-page-wrapper">
+                    <div class="alert alert-warning" role="alert" style="padding-top: 50px;padding-bottom: 50px;text-align: center;margin-top: 80px;"><{$mymsg}></div>
+                    <p style="text-align: center;">页面自动 <a id="href" href="<{$jumpurl}>">跳转</a> 等待时间： <b id="wait"><{$time}></p>
+					<p style="text-align: center;margin-bottom: 100px;">
+						首页传送 <a href="__ROOT__">首页</a>?
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+    (function () {
+        var wait = document.getElementById('wait'), href = document.getElementById('href').href;
+        var interval = setInterval(function () {
+            var time = --wait.innerHTML;
+            if (time == 0) {
+                location.href = href;
+                clearInterval(interval);
+            };
+        }, 1000);
+    })();
+</script>
+</block>

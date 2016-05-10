@@ -1,0 +1,106 @@
+[ 2015-11-11T08:42:36+08:00 ] 112.22.255.15 /WolfTown/admin.php/Index/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T08:43:38+08:00 ] 112.22.255.15 /WolfTown/admin.php
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T08:43:47+08:00 ] 112.22.255.15 /WolfTown/admin.php/Index/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T08:43:59+08:00 ] 112.22.255.15 /WolfTown/admin.php/Index/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T08:44:08+08:00 ] 112.22.255.15 /WolfTown/admin.php/Index/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T08:44:30+08:00 ] 112.22.255.15 /WolfTown/admin.php/Index/index
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T08:45:35+08:00 ] 112.22.255.15 /WolfTown/admin.php/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T08:50:38+08:00 ] 112.22.255.15 /WolfTown/admin.php/fenxiao
+ERR: Table 'a0805150053.tb_fenxiao' doesn't exist
+ [ SQL语句 ] : SHOW COLUMNS FROM `tb_fenxiao`
+ERR: Table 'a0805150053.tb_fenxiao' doesn't exist
+ [ SQL语句 ] : SELECT * FROM `tb_fenxiao` WHERE ( ID=1 ) 
+
+[ 2015-11-11T09:02:06+08:00 ] 112.22.255.15 /WolfTown/admin.php/News/AddNews
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE ( Link = '/company/Blog/blogdetail/BID/10' )' at line 1
+ [ SQL语句 ] : UPDATE `tb_homeslider` SET  WHERE ( Link = '/company/Blog/blogdetail/BID/10' )
+
+[ 2015-11-11T09:04:28+08:00 ] 112.22.255.15 /WolfTown/admin.php/News/AddNews
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE ( Link = '/company/Blog/blogdetail/BID/7' )' at line 1
+ [ SQL语句 ] : UPDATE `tb_homeslider` SET  WHERE ( Link = '/company/Blog/blogdetail/BID/7' )
+
+[ 2015-11-11T09:05:46+08:00 ] 112.22.255.15 /WolfTown/admin.php/News/AddNews
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE ( Link = '/company/Blog/blogdetail/BID/9' )' at line 1
+ [ SQL语句 ] : UPDATE `tb_homeslider` SET  WHERE ( Link = '/company/Blog/blogdetail/BID/9' )
+
+[ 2015-11-11T09:08:30+08:00 ] 112.22.255.15 /WolfTown/admin.php/News/AddNews
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE ( Link = '/company/Blog/blogdetail/BID/11' )' at line 1
+ [ SQL语句 ] : UPDATE `tb_homeslider` SET  WHERE ( Link = '/company/Blog/blogdetail/BID/11' )
+
+[ 2015-11-11T09:18:59+08:00 ] 112.22.255.15 /WolfTown/admin.php/News/AddNews
+ERR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE ( Link = '/company/Blog/blogdetail/BID/14' )' at line 1
+ [ SQL语句 ] : UPDATE `tb_homeslider` SET  WHERE ( Link = '/company/Blog/blogdetail/BID/14' )
+
+[ 2015-11-11T09:27:37+08:00 ] 112.22.255.15 /WolfTown/admin.php
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T09:59:35+08:00 ] 112.22.255.15 /WolfTown/admin.php
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T10:36:36+08:00 ] 112.22.255.15 /WolfTown/admin.php/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T10:45:07+08:00 ] 112.22.255.15 /WolfTown/admin.php
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T10:45:14+08:00 ] 112.22.255.15 /WolfTown/admin.php/Index/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T10:46:06+08:00 ] 112.22.255.15 /WolfTown/admin.php/Index/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T11:01:09+08:00 ] 112.22.255.15 /WolfTown/admin.php/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T11:01:36+08:00 ] 112.22.255.15 /WolfTown/admin.php/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T11:01:47+08:00 ] 112.22.255.15 /WolfTown/admin.php/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T11:02:45+08:00 ] 112.22.255.15 /WolfTown/admin.php/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T11:04:01+08:00 ] 117.91.8.68 /WolfTown/admin.php/
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T11:08:27+08:00 ] 112.22.255.15 /WolfTown/admin.php
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+
+[ 2015-11-11T13:10:48+08:00 ] 117.91.8.68 /WolfTown/admin.php
+ERR: Unknown column 'Statues' in 'where clause'
+ [ SQL语句 ] : SELECT COUNT(*) AS tp_count FROM `tb_product` WHERE ( Statues=0 ) LIMIT 1  
+

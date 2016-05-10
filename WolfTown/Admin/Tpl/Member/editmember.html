@@ -1,0 +1,148 @@
+<div class="section">
+	<div class="container">
+		<!-- Modal -->
+		<div class="row">
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<a href="javascript: location.reload();" class="btn btn-grey"><i
+                        class="glyphicon glyphicon-refresh"></i>刷新</a>
+					<a href="__URL__/index" class="btn btn-grey"><i class="glyphicon glyphicon-arrow-left"></i>返回</a>
+				</div>
+				<div class="panel-body">
+					<form id="myporductform" action="__URL__/AddMember" method="post">
+						<input type="hidden" name="memberid" id="PID" value="<{$pid}>" />
+						<div class="form-group">
+							<label for="membername"><b>店铺名称</b></label>
+							<input class="form-control" name="membername" maxlength="50" type="text" placeholder="" value="<{$memberdata['name']}>">
+						</div>
+
+						<div class="form-group">
+							<label for="location"><b>地址</b></label>
+							<input class="form-control" name="location" maxlength="150" type="text" placeholder="" value="<{$memberdata['location']}>">
+						</div>
+						<div class="form-group">
+							<label for="location"><b>形象图片</b></label>
+						</div>
+						<div class="form-group">
+							<div class="row">
+								<div class="col-lg-6">
+									<img src="__PUBLIC__/UploadFiles/MemberImage/<{$memberdata['imgsrc']}>" id="productImg" style="max-width: 500px" alt="请上传图片" />
+									<input type="hidden" id="myimgfilename" name="myimgfilename" value="<{$memberdata['imgsrc']}>" />
+								</div>
+								<div class="col-lg-6">
+									<input type="file" name="file_upload" id="file_upload" />
+									<div id="queue"></div>
+								</div>
+							</div>
+						</div>
+						<div class="clearfix"></div>
+						<button type="button" class="btn btn-primary pull-right" onclick="SaveChanges()">
+							提交</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<script src="__JS__/uploadify/jquery.uploadify.js"></script>
+
+<script>
+	$(function() {
+		$('#file_upload').uploadify({
+			auto: true,
+			buttonCursor: 'hand',
+			buttonImage: '__JS__/uploadify/img/browse-btn.png',
+			buttonText: '<div>选择文件</div>',
+			debug: false,
+			fileObjName: 'Filedata',
+			fileSizeLimit: imgfilemax,
+			fileTypeExts: '*.jpg;*.png;*.gif;*.jpeg',
+			fileTypeDesc: 'All Files',
+			formData: {
+				currentroot: '__ROOT__/',
+				timestamp: '<{$timestamp}>',
+				token: '<{$unique_salt}>',
+				target: 'addmember'
+			},
+			height: 30,
+			width: 120,
+			itemTemplate: false,
+			method: 'post',
+			multi: false,
+			overrideEvents: [],
+			preventCaching: true,
+			progressData: 'percentage',
+			queueID: false,
+			queueSizeLimit: 999,
+			removeCompleted: true,
+			removeTimeout: 3,
+			requeueErrors: false,
+			successTimeout: 30,
+			swf: '__JS__/uploadify/uploadify.swf',
+			uploader: '__ROOT__/Admin/Common/uploadify.php',
+			uploadLimit: 10,
+			onCancel: function(file) {
+				console.log('The file' + file.name + 'was cancelled.')
+			},
+			onClearQueue: function(queueItemCount) {
+				console
+					.log(queueItemCount + 'file(s) were removed frome the queue')
+			},
+			onDestroy: function() {},
+			onDialogClose: function(queueData) {
+				console.log(queueData.filesSelected + '\n' + queueData.filesQueued + '\r\n' + queueData.filesReplaced + '\r\n' + queueData.filesCancelled + '\r\n' + queueData.filesErrored)
+			},
+			onDialogOpen: function() {},
+			onDisable: function() {},
+			onEnalbe: function() {},
+			onFallback: function() {},
+			onInit: function(instance) {
+				console.log('The queue ID is' + instance.settings.queueID)
+			},
+			onQueueComplete: function(queueData) {
+				console.log(queueData.uploadsSuccessful + '\n' + queueData.uploadsErrored)
+			},
+			onSelect: function(file) {
+				console.log(file.name)
+			},
+			onSelectError: function(file, errorCode, errorMsg) {
+				console.log(errorCode)
+				console.log(this.queueData.errorMsg)
+			},
+			onSWFReady: function() {},
+			onUploadComplete: function(file) {},
+			onUploadError: function(file, errorCode, erorMsg,
+				errorString) {},
+			onUploadProgress: function(file, bytesUploaded,
+				bytesTotal, totalBytesUploaded,
+				totalBytesTotal) {
+				$('#pregress').html(
+					'总共需要上传' + bytesTotal + '字节，' + '已上传' + totalBytesTotal + '字节')
+			},
+			onUploadStart: function(file) {
+				console.log('start update')
+			},
+			onUploadSuccess: function(file, response) {
+				if (response != 'Invalid') {
+					$("#myimgfilename").val(response);
+					response = '__PUBLIC__/UploadFiles/MemberImage/' + response;
+					$("#productImg").attr("src", response);
+				}
+			}
+		});
+	});
+
+	function SaveChanges() {
+		if ($("[name='membername']").val().trim() == "") {
+			myAlert("请填写店铺名称！");
+			return false;
+		}
+		if ($("[name='myimgfilename']").val() == "") {
+			myAlert("请上传一张店铺图片！");
+			return false;
+		}
+		$("#myporductform").submit();
+	}
+</script>

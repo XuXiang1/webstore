@@ -1,0 +1,1 @@
+<?php	return array ( 0 => 'ID', 1 => 'history', 2 => 'profile', 3 => 'competence', 4 => 'honor', 5 => 'team', '_autoinc' => false, '_type' => array ( 'ID' => 'int(11)', 'history' => 'text', 'profile' => 'text', 'competence' => 'text', 'honor' => 'text', 'team' => 'text', ), );?>
