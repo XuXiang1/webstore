@@ -3,11 +3,14 @@
 
 	<head>
 		<meta charset='UTF-8'>
+		<meta name="viewport" content="user-scalable=no" />
 		<title>Wow Talk</title>
 		<link rel='stylesheet' href='./css/reset.css'>
 		<link rel='stylesheet' href='./css/style.css'>
+
 		<script src="./scripts/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="./scripts/nw-desktop-notifications.js"></script>
+
 	</head>
 
 	<body>
@@ -30,11 +33,262 @@
 
 		</div>-->
 		<!-- 首先放一个div，用做loading效果 -->
+		<div class="update-pannel">
+			<div class="title-content">
+				<div class="clogo">
+					<div id="version"></div>
+				</div>
+				<div id="status_log"></div>
+				<div class="update-content" style="display: none;">
+					<ul type="disc">
+						<li class="li-title">图库</li>
+						<li class="li-item">新增已同步照片只删除本地不删除云功能</li>
+						<li class="li-title">垃圾清理</li>
+						<li class="li-item">优化 支持无障碍功能</li>
+					</ul>
+					<!--进度条-->
+					<div id="loaded"></div>
+					<div class="progress">
+						<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+							60%
+						</div>
+					</div>
+					<!--按钮-->
+					<div class="btn-content">
+						<button class="btn btn-success right" style="margin-left: 210px;">立即更新</button>
+						<button class="btn btn-primary right" onclick="goto_page()">跳过</button>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
 		<div class="main">
 			<iframe src="" id="iframepage" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
 		</div>
-		<script type="text/javascript">
 
+		<script type="text/javascript">
+			//main_page.init();
+			window.gui = require('nw.gui');
+			var nw = require('nw.gui');
+			//获得当前窗口
+			var winparent = nw.Window.get();
+			//窗口默认不最大化
+			winparent.isMaximized = false;
+			var isShowWindow = true;
+			//更新相关
+			var copyPath, execPath;
+			if (gui.App.argv.length) {
+				copyPath = gui.App.argv[0];
+				execPath = gui.App.argv[1];
+			}
+			//download new version of app in tmp
+			//unpack
+			//run updater
+			//updater will copy itself to origin directory
+			//updater will run app
+			var pkg = require('./manifest.json');
+			var request = require('request');
+			var url = require('url');
+			var path = require('path');
+			var os = require('os');
+			var fs = require('fs');
+			var k = 0;
+			var d = false;
+			var updater = require('node-webkit-updater');
+			var upd = new updater(pkg);
+			var newVersionCheckIntervalId = null;
+			var tryingForNewVersion = false;
+			//页面初始化动作
+			message_init();
+			tray_init();
+			resizeframe();
+			window_resize_init();
+			$(window).bind('resize', resizeframe);
+			$(function() {
+				check_update();
+			});
+
+			function check_update() {
+				if (!copyPath) {
+					status_log_('checking new version');
+					request.get(url.resolve(pkg.manifestUrl, '/version/' + pkg.version));
+					document.getElementById('version').innerHTML = '正式版 ' + pkg.version;
+					newVersionCheckIntervalId = setInterval(function() {
+						if (!d && !tryingForNewVersion) {
+							tryingForNewVersion = true; //lock
+							upd.checkNewVersion(versionChecked);
+						}
+					}, 500);
+				} else {
+					document.getElementById('version').innerHTML = 'copying app';
+					upd.install(copyPath, newAppInstalled);
+				}
+			}
+
+			function newAppInstalled(err) {
+				if (err) {
+					status_log_(err);
+					return;
+				}
+				upd.run(execPath, null);
+				gui.App.quit();
+			}
+
+			function versionChecked(err, newVersionExists, manifest) {
+				tryingForNewVersion = false; //unlock
+				if (err) {
+					status_log_(err);
+					return Error(err);
+				} else if (d) {
+					status_log_('Already downloading');
+					return;
+				} else if (!newVersionExists) {
+					status_log_('No new version exists');
+					clearInterval(newVersionCheckIntervalId);
+					//goto_page();
+					return;
+				}
+				d = true;
+				clearInterval(newVersionCheckIntervalId);
+				var loaded = 0;
+				var newVersion = upd.download(function(error, filename) {
+					newVersionDownloaded(error, filename, manifest);
+				}, manifest);
+				newVersion.on('data', function(chunk) {
+					loaded += chunk.length;
+					document.getElementById('loaded').innerHTML = "New version loading " + Math.floor(loaded / newVersion['content-length'] * 100) + '%';
+				})
+			}
+
+			function newVersionDownloaded(err, filename, manifest) {
+				if (err) {
+					status_log_(err)
+					return Error(err);
+				}
+				document.getElementById('loaded').innerHTML = "unpacking: " + filename;
+				upd.unpack(filename, newVersionUnpacked, manifest);
+			}
+
+			function newVersionUnpacked(err, newAppPath) {
+				if (err) {
+					status_log_(err)
+					return Error(err);
+				}
+				var runner = upd.runInstaller(newAppPath, [upd.getAppPath(), upd.getAppExec()]);
+				gui.App.quit();
+			}
+
+			function status_log_(msg) {
+				$("#status_log").html(msg);
+			}
+			//
+			//自动改变iframe大小
+			function resizeframe() {
+				var new_height = $("body").height() - 30;
+				$("#iframepage").css("height", new_height + "px");
+			}
+			//点击事件注册
+			function window_resize_init() {
+				// Min
+				document.getElementById('windowControlMinimize').onclick = function() {
+					winparent.minimize();
+				}; // Close
+				document.getElementById('windowControlClose').onclick = function() {
+					winparent.close();
+				}; // Max
+				document.getElementById('windowControlMaximize').onclick = function() {
+					if (winparent.isMaximized) {
+//						winparent.width = 900;
+//						winparent.height = 700;
+//						winparent.isMaximized = false;
+						winparent.unmaximize();
+					} else {
+						winparent.maximize();
+					}
+				};
+				winparent.on('maximize', function() {
+					winparent.isMaximized = true;
+				});
+				winparent.on('unmaximize', function() {
+					winparent.isMaximized = false;
+				});
+			}
+			//系统接收消息
+			function message_init() {
+				//接收消息初始化
+				window.addEventListener('message', function(e) {
+					try {
+						var jsonstr = e.data;
+						var jsonobj = JSON.parse(jsonstr);
+						showFunnyNotification(jsonobj[0], jsonobj[1]);
+					} catch (e) {}
+				}, false);
+			}
+			//显示通知
+			function showFunnyNotification(title, content) {
+				var icon = './img/desktop-notify.png';
+				window.LOCAL_NW.desktopNotifications.notify(icon, title, content, function() {
+					//window.frames[0].postMessage('getcolor','http://webtalk.com');
+					winparent.show();
+				});
+			}
+			//系统任务栏设定
+			function tray_init() {
+				//程序最小化到任务栏设置
+				var tray = new nw.Tray({
+					title: 'Wow Talk',
+					icon: 'src/img/icon_36.png'
+				});
+				tray.tooltip = 'Wow Talk';
+				//Menu
+				var menu = new nw.Menu();
+				menu.append(new nw.MenuItem({
+					type: 'normal',
+					label: 'Show/Hide',
+					click: function() {
+						if (isShowWindow) {
+							winparent.hide();
+							isShowWindow = false;
+						} else {
+							winparent.show();
+							isShowWindow = true;
+						}
+					}
+				}));
+				menu.append(new nw.MenuItem({
+					type: 'normal',
+					label: 'Quit',
+					click: function() {
+						nw.App.quit();
+					}
+				}))
+				tray.menu = menu;
+				//Click to show/hide;
+				tray.on('click',
+					function() {
+						if (isShowWindow) {
+							winparent.hide();
+							isShowWindow = false;
+						} else {
+							winparent.show();
+							isShowWindow = true;
+						}
+					});
+				//Close window to hide;
+				winparent.on('close', function() {
+					this.hide();
+					isShowWindow = false;
+				});
+			}
+
+			function goto_page() {
+				$(".update-pannel").hide();
+				//$("#iframepage").attr("src", 'https://biz.wowtalk.org/webtalk/login');
+				//$("#iframepage").attr("src", 'https://dev02.wowtalkapi.com/webtalk/login');
+				$("#iframepage").attr("src", 'http://webtalk.com/login');
+			}
 		</script>
 	</body>
 

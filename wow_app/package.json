@@ -11,14 +11,13 @@
 		"fullscreen": false,
 		"kiosk": false,
 		"frame": false,
-		"toolbar": true,
+		"toolbar": false,
 		"width": 900,
 		"height": 700,
-		"position": "center",
-		"max_width": 1600,
-		"transparent": true
+		"max_width": 1600
 	},
-	"main": "src/update-app.html",
+//	"main": "src/update-app.html",
+	"main": "src/index.html",
 	"webkit": {
 		"plugin": true,
 		"java": false,

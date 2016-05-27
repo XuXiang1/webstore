@@ -1,101 +1,53 @@
-<html>
-<head>
-<title>updater</title>
-</head>
-<body>
-<div id="version"></div>
-<div id="loaded"></div>
-<script>
-  var gui = require('nw.gui');
-  var copyPath, execPath;
-  if(gui.App.argv.length){
-    copyPath = gui.App.argv[0];
-    execPath = gui.App.argv[1];
-  }
-  //download new version of app in tmp
-  //unpack
-  //run updater
-  //updater will copy itself to origin directory
-  //updater will run app
-  var pkg = require('./manifest.json');
-  var request = require('request');
-  var url = require('url');
-  var path = require('path');
-  var os = require('os');
-  var fs = require('fs');
-  var k = 0;
-  var d = false;
-  var updater = require('node-webkit-updater');
-  var upd = new updater(pkg);
-  var newVersionCheckIntervalId = null;
-  var tryingForNewVersion = false;
-  
-  //for test purposes
-  
-  
-  if(!copyPath){
-    request.get(url.resolve(pkg.manifestUrl, '/version/'+ pkg.version));
-    document.getElementById('version').innerHTML = 'current version ' + pkg.version;
-    newVersionCheckIntervalId = setInterval(function(){
-      if(!d && !tryingForNewVersion) {
-          tryingForNewVersion = true; //lock
-          upd.checkNewVersion(versionChecked);
-      }
-    }, 500);
-  } else {
-    document.getElementById('version').innerHTML = 'copying app';
-    upd.install(copyPath, newAppInstalled);
-    
-    function newAppInstalled(err){
-      if(err){
-        console.log(err);
-        return;
-      }
-      upd.run(execPath, null);
-      gui.App.quit();
-    }
-  }
-  function versionChecked(err, newVersionExists, manifest){
-    tryingForNewVersion = false; //unlock
-    if(err){
-        console.log(err);
-        return Error(err);
-    }
-    else if(d){
-        console.log('Already downloading');
-        return;
-    }
-    else if(!newVersionExists){
-        console.log('No new version exists');
-        return;
-    }
-    d = true;
-    clearInterval(newVersionCheckIntervalId);
-    var loaded = 0;
-    var newVersion = upd.download(function(error, filename){
-        newVersionDownloaded(error, filename, manifest);
-    }, manifest);
-    newVersion.on('data', function(chunk){
-      loaded+=chunk.length;
-      document.getElementById('loaded').innerHTML = "New version loading " + Math.floor(loaded / newVersion['content-length'] * 100) + '%';
-    })
-  }
-  function newVersionDownloaded(err, filename, manifest){
-    if(err){
-      console.log(err)
-      return Error(err);
-    }
-    document.getElementById('loaded').innerHTML = "unpacking: " + filename;
-    upd.unpack(filename, newVersionUnpacked, manifest);
-  }
-  function newVersionUnpacked(err, newAppPath){
-    if(err){
-      console.log(err)
-      return Error(err);
-    }
-    var runner = upd.runInstaller(newAppPath, [upd.getAppPath(), upd.getAppExec()]);
-    gui.App.quit();
-  }
-</script>
-</body>
+<html lang='en'>
+
+	<head>
+		<title>updater</title>
+		<meta charset='UTF-8'>
+		<link rel='stylesheet' href='./css/reset.css'>
+		<link rel='stylesheet' href='./css/style.css'>
+		<script src="./scripts/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<div class="update-pannel">
+			<div class="title-content">
+				<div class="clogo">
+					<div id="version"></div>
+				</div>
+				<div id="status_log"></div>
+				<div class="update-content">
+
+					<ul type="disc">
+						<li class="li-title">图库</li>
+						<li class="li-item">新增已同步照片只删除本地不删除云功能</li>
+						<li class="li-title">垃圾清理</li>
+						<li class="li-item">优化 支持无障碍功能</li>
+					</ul>
+					<!--进度条-->
+					<div id="loaded"></div>
+					<div class="progress">
+						<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+							60%
+						</div>
+					</div>
+					<!--按钮-->
+					<div class="btn-content">
+						<button class="btn btn-success right" style="margin-left: 225px;">立即更新</button>
+						<button class="btn btn-primary right" style="margin-right: 12px;">跳过</button>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+		<script>
+			status_log_('checking new version');
+
+			function status_log_(msg) {
+				$("#status_log").html(msg);
+				$("#version").html('正式版 V 0.1.1');
+			}
+		</script>
+	</body>
+
 </html>
