@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang='en'>
+
+	<head>
+		<meta charset='UTF-8'>
+		<title>Wow Talk</title>
+		<script src="src/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<h2>Wow Talk1232132131 Screenshot Demo</h2>
+
+		<p><button id="cropBeginBtn" onclick="captureDeskTop()">图片截取</button></p>
+
+		<script type="text/javascript" charset="utf-8">
+			//取得video
+			var gui = require('nw.gui');
+
+			function captureDeskTop() {
+				var win = gui.Window.open(
+					'src/createpicture.html', {
+						frame: false,
+						toolbar: false,
+						width: 0,
+						height: 0,
+						'always-on-top': true,
+						show: false,
+						resizable: false
+					});
+			}
+		</script>
+
+	</body>
+
+</html>
