@@ -1,0 +1,17 @@
+ {
+		"name": "updapp",
+		"version": "0.1.1",
+		"author": "Jason Xu <xuxiang@wowtech-inc.com>",
+		"manifestUrl": "http://localhost:80/releases/manifest.json",
+		"packages": {
+			"mac": {
+				"url": "http://localhost:80/releases/mac/updapp.zip"
+			},
+			"win": {
+				"url": "http://localhost:80/releases/win/updapp.zip"
+			},
+			"linux32": {
+				"url": "http://localhost:80/releases/linux32/updapp.tar.gz"
+			}
+		}
+	}

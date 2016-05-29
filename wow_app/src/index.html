@@ -108,8 +108,9 @@
 			$(window).bind('resize', resizeframe);
 			$(function() {
 				check_update();
+				//先跳转-------------------
 			});
-
+			//检查更新
 			function check_update() {
 				if (!copyPath) {
 					status_log_('checking new version');
@@ -130,6 +131,7 @@
 			function newAppInstalled(err) {
 				if (err) {
 					status_log_(err);
+					goto_page();
 					return;
 				}
 				upd.run(execPath, null);
@@ -140,14 +142,14 @@
 				tryingForNewVersion = false; //unlock
 				if (err) {
 					status_log_(err);
+					goto_page();
 					return Error(err);
 				} else if (d) {
 					status_log_('Already downloading');
 					return;
 				} else if (!newVersionExists) {
-					status_log_('No new version exists');
-					clearInterval(newVersionCheckIntervalId);
-					//goto_page();
+					status_log_('No new version exists');				
+					goto_page();
 					return;
 				}
 				d = true;
@@ -164,7 +166,9 @@
 
 			function newVersionDownloaded(err, filename, manifest) {
 				if (err) {
-					status_log_(err)
+					status_log_(err);
+					//检查更新出错
+					goto_page();
 					return Error(err);
 				}
 				document.getElementById('loaded').innerHTML = "unpacking: " + filename;
@@ -173,7 +177,8 @@
 
 			function newVersionUnpacked(err, newAppPath) {
 				if (err) {
-					status_log_(err)
+					status_log_(err);
+					goto_page();
 					return Error(err);
 				}
 				var runner = upd.runInstaller(newAppPath, [upd.getAppPath(), upd.getAppExec()]);
@@ -284,10 +289,12 @@
 			}
 
 			function goto_page() {
+				clearInterval(newVersionCheckIntervalId);
 				$(".update-pannel").hide();
 				//$("#iframepage").attr("src", 'https://biz.wowtalk.org/webtalk/login');
 				//$("#iframepage").attr("src", 'https://dev02.wowtalkapi.com/webtalk/login');
-				$("#iframepage").attr("src", 'http://webtalk.com/login');
+				//$("#iframepage").attr("src", 'http://webtalk.com/login');
+				$("#iframepage").attr("src", 'http://www.baidu.com');
 			}
 		</script>
 	</body>
