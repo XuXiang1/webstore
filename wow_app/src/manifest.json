@@ -1,21 +1,21 @@
  {
 		"name": "updapp",
-		"version": "1.1.1",
+		"version": "1.1.0",
 		"author": "Jason Xu <xuxiang@wowtech-inc.com>",
 		"manifestUrl": "https://dev02web-jp001.wowtalkapi.com/webtalk/releases/manifest.json",
 		"packages": {
 			"mac": {
-				"url": "https://dev02web-jp001.wowtalkapi.com/webtalk/releases/mac/updapp.zip"
+				"url": "http://dev02web-jp001.wowtalkapi.com/webtalk/releases/mac/updapp.zip"
 			},
 			"win": {
-				"url": "https://dev02web-jp001.wowtalkapi.com/webtalk/releases/win/updapp.zip"
+				"url": "http://dev02web-jp001.wowtalkapi.com/webtalk/releases/win/updapp.zip"
 			},
 			"linux32": {
-				"url": "https://dev02web-jp001.wowtalkapi.com/webtalk/releases/linux32/updapp.tar.gz"
+				"url": "http://dev02web-jp001.wowtalkapi.com/webtalk/releases/linux32/updapp.tar.gz"
 			}
 		},
 		"main_url_to":"https://dev02.wowtalkapi.com/webtalk/login",
 		"description_chinese":["更新功能---chinese","我们将不断完善wowtalk"],
 		"description_english":["更新功能---english","我们将不断完善wowtalk"],
 		"description_japanese":["更新功能---japanese","我们将不断完善wowtalk"]
-	}
+}

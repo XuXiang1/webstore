@@ -240,7 +240,7 @@
 					return Error(err);
 				}
 				var runner = upd.runInstaller(newAppPath, [upd.getAppPath(), upd.getAppExec()]);
-				//gui.App.quit();
+				gui.App.quit();
 			}
 
 			function status_log_(msg) {
@@ -349,11 +349,11 @@
 			function goto_page() {
 				clearInterval(newVersionCheckIntervalId);
 				
-//				$("#iframepage").attr("src", pkg.main_url_to);
-//				setTimeout(function(){
-//					$(".update-pannel").fadeOut();
-//					$("#iframepage").show();
-//				},800)
+				$("#iframepage").attr("src", pkg.main_url_to);
+				setTimeout(function(){
+					$(".update-pannel").fadeOut();
+					$("#iframepage").show();
+				},800)
 				
 			}
 		</script>
