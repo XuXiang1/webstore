@@ -10,7 +10,7 @@ video {
 }
 .progress {
 	width: 350px;
-	margin: 50 auto;
+	margin: 10px auto;
   height: 20px;
   margin-bottom: 20px;
   overflow: hidden;
@@ -764,7 +764,7 @@ body {
 	color: #FFFFFF;
 	margin: auto;
 	margin-top: 80px;
-	border: 1px solid ghostwhite;
+	border:1px solid rgb(172, 172, 174);
 	border-radius: 4px;
 	padding: 20px 15px 40px 15px;
 }
@@ -777,7 +777,7 @@ body {
 	margin-left: auto;
 	margin-right: auto;
 	background: url(../img/main.png) no-repeat;
-	padding-right: 85px;
+	padding-right: 49px;
 	cursor: pointer;
 }
 
@@ -819,5 +819,9 @@ body {
 .btn-content{
 	margin: 25px 0 0 0;
 
+}
+
+#loaded{
+	line-height: 15px;
 }
 

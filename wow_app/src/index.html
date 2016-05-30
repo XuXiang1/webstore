@@ -10,7 +10,8 @@
 
 		<script src="./scripts/jquery.min.js" type="text/javascript" charset="utf-8"></script>
 		<script src="./scripts/nw-desktop-notifications.js"></script>
-
+		<script src="./scripts/lang.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./scripts/main.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 
 	<body>
@@ -40,23 +41,25 @@
 				</div>
 				<div id="status_log"></div>
 				<div class="update-content" style="display: none;">
-					<ul type="disc">
-						<li class="li-title">图库</li>
-						<li class="li-item">新增已同步照片只删除本地不删除云功能</li>
-						<li class="li-title">垃圾清理</li>
-						<li class="li-item">优化 支持无障碍功能</li>
+					<ul type="disc" id="new_feacture">
+						<!--<li class="li-title">图库</li>
+						<li class="li-item">新增已同步照片只删除本地不删除云功能</li>-->
 					</ul>
 					<!--进度条-->
 					<div id="loaded"></div>
 					<div class="progress">
-						<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-							60%
+						<div class="progress-bar progress-bar-striped active" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0;">
+							0%
 						</div>
 					</div>
 					<!--按钮-->
 					<div class="btn-content">
-						<button class="btn btn-success right" style="margin-left: 210px;">立即更新</button>
-						<button class="btn btn-primary right" onclick="goto_page()">跳过</button>
+						<button class="btn btn-success right" id="update_now" style="margin-left: 210px;"></button>
+						<button class="btn btn-primary right" id="skip_now" onclick="goto_page()"></button>
+						<script>
+							$("#update_now").html(language_broswer['update_now']);
+							$("#skip_now").html(language_broswer['skip_now']);
+						</script>
 					</div>
 				</div>
 
@@ -65,7 +68,7 @@
 		</div>
 
 		<div class="main">
-			<iframe src="" id="iframepage" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+			<iframe src="" id="iframepage" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" style="display: none;"></iframe>
 		</div>
 
 		<script type="text/javascript">
@@ -109,13 +112,14 @@
 			$(function() {
 				check_update();
 				//先跳转-------------------
+				$("#iframepage").attr("src", pkg.main_url_to);
 			});
 			//检查更新
 			function check_update() {
 				if (!copyPath) {
-					status_log_('checking new version');
+					status_log_(language_broswer['checking_version']);
 					request.get(url.resolve(pkg.manifestUrl, '/version/' + pkg.version));
-					document.getElementById('version').innerHTML = '正式版 ' + pkg.version;
+					document.getElementById('version').innerHTML = 'V ' + pkg.version;
 					newVersionCheckIntervalId = setInterval(function() {
 						if (!d && !tryingForNewVersion) {
 							tryingForNewVersion = true; //lock
@@ -123,7 +127,7 @@
 						}
 					}, 500);
 				} else {
-					document.getElementById('version').innerHTML = 'copying app';
+					document.getElementById('version').innerHTML = language_broswer['copying_app'];
 					upd.install(copyPath, newAppInstalled);
 				}
 			}
@@ -145,23 +149,79 @@
 					goto_page();
 					return Error(err);
 				} else if (d) {
-					status_log_('Already downloading');
+					status_log_(language_broswer['already_downloading']);
 					return;
 				} else if (!newVersionExists) {
-					status_log_('No new version exists');				
+					status_log_(language_broswer['no_new_version']);
 					goto_page();
 					return;
 				}
 				d = true;
 				clearInterval(newVersionCheckIntervalId);
+				//检测到新版本
+				//显示新特性
+				var newfeactures = [];
+				switch (language_broswer['test_language']) {
+					case "en":
+						newfeactures = manifest["description_english"];
+						break;
+					case "zh":
+						newfeactures = manifest["description_chinese"];
+						break;
+					default:
+						newfeactures = manifest["description_japanese"];
+						break;
+				}
+				$("#new_feacture").html("");
+				for (var i = 0; i < newfeactures.length; i++) {
+					if (i % 2 == 0) {
+						$("#new_feacture").append($("<li></li>").addClass("li-title").html(newfeactures[i]));
+					} else {
+						$("#new_feacture").append($("<li></li>").addClass("li-item").html(newfeactures[i]));
+					}
+				}
+				$(".update-content").show();
 				var loaded = 0;
-				var newVersion = upd.download(function(error, filename) {
-					newVersionDownloaded(error, filename, manifest);
-				}, manifest);
-				newVersion.on('data', function(chunk) {
-					loaded += chunk.length;
-					document.getElementById('loaded').innerHTML = "New version loading " + Math.floor(loaded / newVersion['content-length'] * 100) + '%';
-				})
+				status_log_(language_broswer['new_version_detected']);
+				//检查大版本号
+				var current_num = pkg.version.split('.')[0];
+				var server_num = manifest.version.split('.')[0];
+				if (server_num > current_num) {
+					//立刻更新，无需点击
+					$("#update_now").hide();
+					$("#skip_now").hide();
+					var newVersion = upd.download(function(error, filename) {
+						newVersionDownloaded(error, filename, manifest);
+					}, manifest);
+					//滚动条
+					newVersion.on('data', function(chunk) {
+						loaded += chunk.length;
+						var percent1 = Math.floor(loaded / newVersion['content-length'] * 100);
+						var target_my = $("#progress-bar");
+						target_my.css("width", percent1 + '%');
+						target_my[0].innerHTML = percent1 + '%';
+						target_my.attr("aria-valuenow", percent1);
+						document.getElementById('loaded').innerHTML = language_broswer['New_version_loading'] + Math.floor(loaded / newVersion['content-length'] * 100) + '%';
+					})
+				} else {
+					//点击立即更新
+					$("#update_now").click(function() {
+						$("#update_now").attr("disabled", "disabled");
+						var newVersion = upd.download(function(error, filename) {
+							newVersionDownloaded(error, filename, manifest);
+						}, manifest);
+						//滚动条
+						newVersion.on('data', function(chunk) {
+							loaded += chunk.length;
+							var percent1 = Math.floor(loaded / newVersion['content-length'] * 100);
+							var target_my = $("#progress-bar");
+							target_my.css("width", percent1 + '%');
+							target_my[0].innerHTML = percent1 + '%';
+							target_my.attr("aria-valuenow", percent1);
+							document.getElementById('loaded').innerHTML = language_broswer['new_version_loading'] + Math.floor(loaded / newVersion['content-length'] * 100) + '%';
+						})
+					});
+				}
 			}
 
 			function newVersionDownloaded(err, filename, manifest) {
@@ -171,7 +231,7 @@
 					goto_page();
 					return Error(err);
 				}
-				document.getElementById('loaded').innerHTML = "unpacking: " + filename;
+				document.getElementById('loaded').innerHTML = language_broswer['unpacking'] + filename;
 				upd.unpack(filename, newVersionUnpacked, manifest);
 			}
 
@@ -182,7 +242,7 @@
 					return Error(err);
 				}
 				var runner = upd.runInstaller(newAppPath, [upd.getAppPath(), upd.getAppExec()]);
-				gui.App.quit();
+				//gui.App.quit();
 			}
 
 			function status_log_(msg) {
@@ -205,9 +265,9 @@
 				}; // Max
 				document.getElementById('windowControlMaximize').onclick = function() {
 					if (winparent.isMaximized) {
-//						winparent.width = 900;
-//						winparent.height = 700;
-//						winparent.isMaximized = false;
+						//						winparent.width = 900;
+						//						winparent.height = 700;
+						//						winparent.isMaximized = false;
 						winparent.unmaximize();
 					} else {
 						winparent.maximize();
@@ -251,7 +311,7 @@
 				var menu = new nw.Menu();
 				menu.append(new nw.MenuItem({
 					type: 'normal',
-					label: 'Show/Hide',
+					label: language_broswer['show_hide'],
 					click: function() {
 						if (isShowWindow) {
 							winparent.hide();
@@ -264,7 +324,7 @@
 				}));
 				menu.append(new nw.MenuItem({
 					type: 'normal',
-					label: 'Quit',
+					label: language_broswer['quit'],
 					click: function() {
 						nw.App.quit();
 					}
@@ -291,10 +351,7 @@
 			function goto_page() {
 				clearInterval(newVersionCheckIntervalId);
 				$(".update-pannel").hide();
-				//$("#iframepage").attr("src", 'https://biz.wowtalk.org/webtalk/login');
-				//$("#iframepage").attr("src", 'https://dev02.wowtalkapi.com/webtalk/login');
-				//$("#iframepage").attr("src", 'http://webtalk.com/login');
-				$("#iframepage").attr("src", 'http://www.baidu.com');
+				$("#iframepage").show();
 			}
 		</script>
 	</body>
