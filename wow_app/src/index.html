@@ -111,8 +111,6 @@
 			$(window).bind('resize', resizeframe);
 			$(function() {
 				check_update();
-				//先跳转-------------------
-				$("#iframepage").attr("src", pkg.main_url_to);
 			});
 			//检查更新
 			function check_update() {
@@ -182,7 +180,7 @@
 				}
 				$(".update-content").show();
 				var loaded = 0;
-				status_log_(language_broswer['new_version_detected']);
+				status_log_(language_broswer['new_version_detected']+" V"+manifest.version);
 				//检查大版本号
 				var current_num = pkg.version.split('.')[0];
 				var server_num = manifest.version.split('.')[0];
@@ -350,8 +348,13 @@
 
 			function goto_page() {
 				clearInterval(newVersionCheckIntervalId);
-				$(".update-pannel").hide();
-				$("#iframepage").show();
+				
+//				$("#iframepage").attr("src", pkg.main_url_to);
+//				setTimeout(function(){
+//					$(".update-pannel").fadeOut();
+//					$("#iframepage").show();
+//				},800)
+				
 			}
 		</script>
 	</body>
