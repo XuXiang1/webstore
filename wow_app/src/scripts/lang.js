@@ -2,7 +2,7 @@ var LANG = {
 	'english': {
 		'test_language': 'en',
 		'update_now': 'Update Now',
-		'skip_now': 'Skip',
+		'skip_now': 'Not Now',
 		'checking_version':'checking new version',
 		'copying_app':'copying app',
 		'already_downloading':'Already downloading',
@@ -16,7 +16,7 @@ var LANG = {
 	'japanese': {
 		'test_language': 'jp',
 		'update_now': 'Update Now',
-		'skip_now': 'Skip',
+		'skip_now': 'Not Now',
 		'checking_version':'checking new version',
 		'copying_app':'copying app',
 		'already_downloading':'Already downloading',
@@ -30,7 +30,7 @@ var LANG = {
 	'chinese': {
 		'test_language': 'zh',
 		'update_now': '立即更新',
-		'skip_now': '跳过',
+		'skip_now': '暂不更新',
 		'checking_version':'正在检查更新',
 		'copying_app':'正在复制程序',
 		'already_downloading':'更新包下载完毕',

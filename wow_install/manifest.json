@@ -1,0 +1,15 @@
+ {
+		"name": "wowtalk_setup_v1.1.2",
+		"version": "1.1.2",
+		"author": "Jason Xu <xuxiang@wowtech-inc.com>",
+		"manifestUrl": "https://dev02web-jp001.wowtalkapi.com/webtalk/releases/manifest.json",
+		"packages": {
+			"win": {
+				"url": "http://dev02web-jp001.wowtalkapi.com/webtalk/releases/win/wowtalk_setup_v1.1.2.zip"
+			}
+		},
+		"main_url_to":"https://dev02.wowtalkapi.com/webtalk/login",
+		"description_chinese":["更新功能---chinese","我们将不断完善wowtalk"],
+		"description_english":["更新功能---english","我们将不断完善wowtalk"],
+		"description_japanese":["更新功能---japanese","我们将不断完善wowtalk"]
+}

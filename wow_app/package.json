@@ -1,7 +1,7 @@
 {
 	"name": "Wow Talk",
 	"description": "Wow Talk",
-	"version": "1.1.3",
+	"version": "1.1.0",
 	"window": {
 		"title": "Wow Talk",
 		"icon": "fav.ico",
@@ -11,7 +11,7 @@
 		"fullscreen": false,
 		"kiosk": false,
 		"frame": false,
-		"toolbar": true,
+		"toolbar": false,
 		"width": 900,
 		"height": 700,
 		"max_width": 1600

@@ -1,17 +1,11 @@
  {
-		"name": "updapp",
+		"name": "wowtalk_setup_v1.1.0",
 		"version": "1.1.0",
 		"author": "Jason Xu <xuxiang@wowtech-inc.com>",
 		"manifestUrl": "https://dev02web-jp001.wowtalkapi.com/webtalk/releases/manifest.json",
 		"packages": {
-			"mac": {
-				"url": "http://dev02web-jp001.wowtalkapi.com/webtalk/releases/mac/updapp.zip"
-			},
 			"win": {
-				"url": "http://dev02web-jp001.wowtalkapi.com/webtalk/releases/win/updapp.zip"
-			},
-			"linux32": {
-				"url": "http://dev02web-jp001.wowtalkapi.com/webtalk/releases/linux32/updapp.tar.gz"
+				"url": "http://dev02web-jp001.wowtalkapi.com/webtalk/releases/win/wowtalk_setup_v1.1.0.zip"
 			}
 		},
 		"main_url_to":"https://dev02.wowtalkapi.com/webtalk/login",

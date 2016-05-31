@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "WowTalk"
-#define MyAppVersion "1.1.3"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "KINGSOFT JAPAN, INC."
 #define MyAppURL "https://biz.wowtalk.org/webtalk/"
 #define MyAppExeName "nw.exe"
@@ -22,7 +22,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=D:\webstore\wow_install
-OutputBaseFilename=wowtalk_setup
+OutputBaseFilename=wowtalk_setup_v1.1.0
 SetupIconFile=C:\Users\Administrator\Desktop\favicon.ico
 Compression=lzma
 SolidCompression=yes
