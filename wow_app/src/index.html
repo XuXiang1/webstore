@@ -54,7 +54,7 @@
 					</div>
 					<!--按钮-->
 					<div class="btn-content">
-						<button class="btn btn-success right" id="update_now" style="margin-left: 210px;"></button>
+						<button class="btn btn-success right" id="update_now" style="margin-left: 178px;"></button>
 						<button class="btn btn-primary right" id="skip_now" onclick="goto_page()"></button>
 						<script>
 							$("#update_now").html(language_broswer['update_now']);
@@ -110,7 +110,12 @@
 			window_resize_init();
 			$(window).bind('resize', resizeframe);
 			$(function() {
+				setTimeout(function(){
+					gui.Window.get().show();
+				},100);
+
 				check_update();
+				
 			});
 			//检查更新
 			function check_update() {
@@ -348,11 +353,10 @@
 
 			function goto_page() {
 				clearInterval(newVersionCheckIntervalId);
-				
 				$("#iframepage").attr("src", pkg.main_url_to);
 				setTimeout(function(){
 					$(".update-pannel").fadeOut("normal");
-					$("#iframepage").fadeIn("fast");
+					$("#iframepage").show();
 				},800)
 				
 			}
