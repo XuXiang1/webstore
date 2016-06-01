@@ -12,22 +12,45 @@
 		<script src="./scripts/nw-desktop-notifications.js"></script>
 		<script src="./scripts/lang.js" type="text/javascript" charset="utf-8"></script>
 		<script src="./scripts/main.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./scripts/jquery.setconfig.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 
 	<body>
 		<header>
 			<ul>
 				<li>
-					<a href='#' title='Minimize' id='windowControlMinimize'></a>
+					<a href='#' title='Options' id='windowControlOption'></a>
 				</li>
 				<li>
-					<a href='#' title='Maximize' id='windowControlMaximize'></a>
+					<a href='#' title='Minimize' id='windowControlMinimize'></a>
 				</li>
+				<!--<li>
+					<a href='#' title='Maximize' id='windowControlMaximize'></a>
+				</li>-->
 				<li>
 					<a href='#' title='Close' id='windowControlClose'></a>
 				</li>
 			</ul>
 		</header>
+
+		<div class="list-group hidediv" id="option_menu">
+			<!--active-->
+			<a href="javascript:void(0)" onclick="showNotion()" class="list-group-item active-option">
+				<img id="show_notion_img" src="./img/option-1.png" /> 新消息通知
+			</a>
+			<a href="javascript:void(0)" onclick="is_checkUpdate()" class="list-group-item ">
+				<img id="is_checkUpdate_img" src="./img/option-1.png" /> 检查更新
+			</a>
+			<a href="javascript:void(0)" onclick="quit_exc()" class="list-group-item">
+				<img id="quitexe" src="./img/option-1.png" style="visibility: hidden;" /> 退出程序
+			</a>
+
+			<script>
+				$("#show_notion_img").append(language_broswer['news_popup']);
+				$("#is_checkUpdate_img").append(language_broswer['check_pudate']);
+				$("#quitexe").append(language_broswer['exit_program']);
+			</script>
+		</div>
 		<!--<div id="load" align="center">
 
 			<img src="loading.gif" />
@@ -35,12 +58,12 @@
 		</div>-->
 		<!-- 首先放一个div，用做loading效果 -->
 		<div class="update-pannel">
-			<div class="title-content">
+			<div class="title-content" style="display: none;">
 				<div class="clogo">
 					<div id="version"></div>
 				</div>
 				<div id="status_log"></div>
-				<div class="update-content" style="display: none;">
+				<div class="update-content " style="display: none;">
 					<ul type="disc" id="new_feacture">
 						<!--<li class="li-title">图库</li>
 						<li class="li-item">新增已同步照片只删除本地不删除云功能</li>-->
@@ -75,7 +98,6 @@
 			//main_page.init();
 			window.gui = require('nw.gui');
 			var nw = require('nw.gui');
-			//获得当前窗口
 			var winparent = nw.Window.get();
 			//窗口默认不最大化
 			winparent.isMaximized = false;
@@ -103,19 +125,36 @@
 			var upd = new updater(pkg);
 			var newVersionCheckIntervalId = null;
 			var tryingForNewVersion = false;
+			var timeout;
 			//页面初始化动作
-			message_init();
+			//接收消息初始化
+			window.addEventListener('message', function(e) {
+				try {
+					var jsonstr = e.data;
+					var jsonobj = JSON.parse(jsonstr);
+					if (jsonobj[0] == "show_window") {
+						winparent.show();
+					} else {
+						if (is_show_notion == "true") {
+							showFunnyNotification(jsonobj[0], jsonobj[1]);
+						}
+					}
+				} catch (e) {}
+			}, false);
 			tray_init();
 			resizeframe();
 			window_resize_init();
 			$(window).bind('resize', resizeframe);
 			$(function() {
-				setTimeout(function(){
+				update_config();
+				setTimeout(function() {
 					gui.Window.get().show();
-				},100);
-
-				check_update();
-				
+					if (is_check_update == "true") {
+						check_update();
+					} else {
+						goto_page();
+					}
+				}, 100);
 			});
 			//检查更新
 			function check_update() {
@@ -146,6 +185,7 @@
 			}
 
 			function versionChecked(err, newVersionExists, manifest) {
+				$(".title-content").show();
 				tryingForNewVersion = false; //unlock
 				if (err) {
 					status_log_(err);
@@ -185,7 +225,7 @@
 				}
 				$(".update-content").show();
 				var loaded = 0;
-				status_log_(language_broswer['new_version_detected']+" V"+manifest.version);
+				status_log_(language_broswer['new_version_detected'] + " V" + manifest.version);
 				//检查大版本号
 				var current_num = pkg.version.split('.')[0];
 				var server_num = manifest.version.split('.')[0];
@@ -259,6 +299,19 @@
 			}
 			//点击事件注册
 			function window_resize_init() {
+				// Options
+				document.getElementById('windowControlOption').onclick = function() {
+					showHideMenu();
+				}; // Options
+				$("#windowControlOption").blur(function() {
+					clearTimeout(timeout);
+					timeout = setTimeout(hideMenu, 200);
+				});
+				$("#option_menu").click(function() {
+					clearTimeout(timeout);
+					$("#windowControlOption").focus();
+				});
+				//选择选项
 				// Min
 				document.getElementById('windowControlMinimize').onclick = function() {
 					winparent.minimize();
@@ -266,16 +319,16 @@
 				document.getElementById('windowControlClose').onclick = function() {
 					winparent.close();
 				}; // Max
-				document.getElementById('windowControlMaximize').onclick = function() {
-					if (winparent.isMaximized) {
-						//						winparent.width = 900;
-						//						winparent.height = 700;
-						//						winparent.isMaximized = false;
-						winparent.unmaximize();
-					} else {
-						winparent.maximize();
-					}
-				};
+				//				document.getElementById('windowControlMaximize').onclick = function() {
+				//					if (winparent.isMaximized) {
+				//						//						winparent.width = 900;
+				//						//						winparent.height = 700;
+				//						//						winparent.isMaximized = false;
+				//						winparent.unmaximize();
+				//					} else {
+				//						winparent.maximize();
+				//					}
+				//				};
 				winparent.on('maximize', function() {
 					winparent.isMaximized = true;
 				});
@@ -283,16 +336,45 @@
 					winparent.isMaximized = false;
 				});
 			}
-			//系统接收消息
-			function message_init() {
-				//接收消息初始化
-				window.addEventListener('message', function(e) {
-					try {
-						var jsonstr = e.data;
-						var jsonobj = JSON.parse(jsonstr);
-						showFunnyNotification(jsonobj[0], jsonobj[1]);
-					} catch (e) {}
-				}, false);
+			//系统设置
+			function showHideMenu() {
+				$("#option_menu").toggleClass("hidediv");
+			}
+
+			function hideMenu() {
+				$("#option_menu").addClass("hidediv");
+			}
+			//是否显示通知
+			function showNotion() {
+				//通知
+				var t = is_show_notion == "true" ? "false" : "true";
+				set_options_setconfig("is_show_notion", t);
+			}
+			//是否检查更新
+			function is_checkUpdate() {
+				var t = is_check_update == "true" ? "false" : "true";
+				set_options_setconfig("is_check_update", t);
+			}
+
+			function set_options_setconfig(option_key, t) {
+				$.setconfig(option_key, t);
+			}
+
+			function check_options() {
+				var isShowNotification = is_show_notion;
+				//通知
+				if (isShowNotification == "true") {
+					$("#show_notion_img").css("visibility", "visible");
+				} else {
+					$("#show_notion_img").css("visibility", "hidden");
+				}
+				var ischeckupdate = is_check_update;
+				//更新
+				if (ischeckupdate == "true") {
+					$("#is_checkUpdate_img").css("visibility", "visible");
+				} else {
+					$("#is_checkUpdate_img").css("visibility", "hidden");
+				}
 			}
 			//显示通知
 			function showFunnyNotification(title, content) {
@@ -351,16 +433,20 @@
 				});
 			}
 
+			function quit_exc() {
+				nw.App.quit();
+			}
+
 			function goto_page() {
 				clearInterval(newVersionCheckIntervalId);
 				$("#iframepage").attr("src", pkg.main_url_to);
-				setTimeout(function(){
+				setTimeout(function() {
 					$(".update-pannel").fadeOut("normal");
 					$("#iframepage").show();
-				},800)
-				
+				}, 800)
 			}
 		</script>
+
 	</body>
 
 </html>

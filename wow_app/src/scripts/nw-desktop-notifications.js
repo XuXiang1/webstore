@@ -14,11 +14,12 @@
 
 	function makeNewNotifyWindow(){
 		var win = gui.Window.open(
-			'../nw-desktop-notifications.html', {
+			'../src/nw-desktop-notifications.html', {
 			frame: false,
 			toolbar: false,
 			width: WINDOW_WIDTH,
 			height: 0,
+			toolbar:false,
 			'always-on-top': true,
 			icon: "favicon.ico",
 			show: false,

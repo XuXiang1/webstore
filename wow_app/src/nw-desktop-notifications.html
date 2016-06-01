@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title>Wow Talk Message</title>
-		<script src="jquery-1.9.1.min.js"></script>
+		<script src="./scripts/jquery.min.js"></script>
 		<style type="text/css">
 			body {
 				font-family : Helvetica, Arial, sans-serif;
@@ -26,6 +26,7 @@
 				overflow: hidden;
 				list-style: none;
 				margin: 0px;
+				border: 1px solid darkgray;
 				padding: 10px 10px 10px 10px;
 				width: 290px;
 				min-height: 70px;
@@ -94,7 +95,7 @@
 					else if(n.length > LIMIT_FOR_TRUNKATING_MESSAGES){
 						var toinsert = "<li>"+
 							"<div class='icon'>" +
-								"<img src='desktop-notify.png' />" +
+								"<img src='./img/Ddesktop-notify.png' />" +
 							"</div>" +
 							"<div class='title'>Application Name Here</div>" +
 							"<div class='description'>"+n.length+" new cards.</div>" +

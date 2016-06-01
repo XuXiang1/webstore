@@ -11,7 +11,7 @@
 		"fullscreen": false,
 		"kiosk": false,
 		"frame": false,
-		"toolbar": false,
+		"toolbar": true,
 		"width": 900,
 		"height": 700,
 		"max_width": 1600,
