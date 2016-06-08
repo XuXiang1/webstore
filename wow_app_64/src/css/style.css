@@ -963,7 +963,7 @@ header>ul>li>a {
 	width: 22px;
 	height: 22px;
 	margin: 6px 6px 6px 0;
-	background-image: url('../img/icons.svg');
+	background-image: url('../img/icons.png');
 	background-repeat: no-repeat;
 	-webkit-transition: -webkit-transform 200ms;
 	-webkit-app-region: no-drag;
@@ -980,7 +980,7 @@ a#windowControlOptions{
 }
 
 a#windowControlClose {
-	background-position: -44px 0;
+	background-position: -65px 0;
 }
 
 a#windowControlMaximize {
@@ -988,7 +988,7 @@ a#windowControlMaximize {
 }
 
 a#windowControlMinimize {
-	background-position: 0 0;
+	background-position: -22px 0;
 }
 
 a#windowControlOption {
@@ -1029,6 +1029,8 @@ body {
 	z-index: 2;
 	margin-top: -4px;
 	/*background-color: lightgrey;*/
+	border-bottom: 1px solid #323847;
+	border-right: 1px solid #323847;
 }
 
 .update-pannel {
@@ -1048,7 +1050,7 @@ body {
 	margin-top: 80px;
 	border:1px solid rgb(172, 172, 174);
 	border-radius: 4px;
-	padding: 20px 15px 40px 15px;
+	padding: 20px 15px 58px 15px;
 }
 
 .clogo {
@@ -1118,8 +1120,13 @@ body {
 	 margin-top: 2px;
 }
 
-
+.btn-content button{
+	float: right;
+}
 
 .hidediv{
 	display: none;
+}
+#show_notion_img, #is_checkUpdate_img, #quitexe{
+	margin-right: 12px;
 }

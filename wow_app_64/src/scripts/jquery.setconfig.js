@@ -5,7 +5,6 @@ var filename_ = "/nodeconfig.txt";
 var is_check_update = "true";
 var is_show_notion = "true";
 set_config_init();
-var timeline;
 jQuery.setconfig = function(name, value) {
 	if (typeof value != 'undefined') { // name and value given, set cookie
 		fs.readFile(tempdir + filename_, function(err, data) {
@@ -16,7 +15,6 @@ jQuery.setconfig = function(name, value) {
 				data = JSON.parse(data);
 				data[name] = value;
 				data = JSON.stringify(data);
-				clearInterval(timeline);
 				fs.writeFile(tempdir + filename_, data, function(err) {
 					if (err) {
 						//console.log("line:set err" + err);
@@ -32,13 +30,6 @@ jQuery.setconfig = function(name, value) {
 
 function set_config_init() {
 	var custom_setting = [];
-	timeline = setInterval(function() {
-		update_config()
-	}, 500);
-
-}
-
-function update_config() {
 	fs.readFile(tempdir + filename_, function(err, data) {
 		if (err) { //没有配置文件
 			fs.readFile('./src/custom_settings.json', function(err, data1) {

@@ -26,10 +26,11 @@
 				overflow: hidden;
 				list-style: none;
 				margin: 0px;
-				border: 1px solid darkgray;
+				border: 1px solid darkgray !important;
 				padding: 10px 10px 10px 10px;
 				width: 290px;
 				min-height: 70px;
+				background-color: #f2f4f7;
 				-webkit-app-region: no-drag;
 			}
 			#notifications li {
@@ -39,8 +40,9 @@
 				cursor: pointer;
 			}
 			#notifications .icon img {
-				width: 30px;
+				width: 35px;
 				float: left;
+				z-index: 99999;
 			}
 			#notifications .title,
 			#notifications .description {

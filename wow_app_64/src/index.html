@@ -12,7 +12,6 @@
 		<script src="./scripts/nw-desktop-notifications.js"></script>
 		<script src="./scripts/lang.js" type="text/javascript" charset="utf-8"></script>
 		<script src="./scripts/main.js" type="text/javascript" charset="utf-8"></script>
-		<script src="./scripts/jquery.setconfig.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 
 	<body>
@@ -36,19 +35,19 @@
 		<div class="list-group hidediv" id="option_menu">
 			<!--active-->
 			<a href="javascript:void(0)" onclick="showNotion()" class="list-group-item active-option">
-				<img id="show_notion_img" src="./img/option-1.png" /> 新消息通知
+				<img id="show_notion_img" src="./img/option-1.png" /> 
 			</a>
 			<a href="javascript:void(0)" onclick="is_checkUpdate()" class="list-group-item ">
-				<img id="is_checkUpdate_img" src="./img/option-1.png" /> 检查更新
+				<img id="is_checkUpdate_img" src="./img/option-1.png" /> 
 			</a>
 			<a href="javascript:void(0)" onclick="quit_exc()" class="list-group-item">
-				<img id="quitexe" src="./img/option-1.png" style="visibility: hidden;" /> 退出程序
+				<img id="quitexe" src="./img/option-1.png" style="visibility: hidden;" /> 
 			</a>
 
 			<script>
-				$("#show_notion_img").append(language_broswer['news_popup']);
-				$("#is_checkUpdate_img").append(language_broswer['check_pudate']);
-				$("#quitexe").append(language_broswer['exit_program']);
+				$("#show_notion_img").after(language_broswer['news_popup']);
+				$("#is_checkUpdate_img").after(language_broswer['check_pudate']);
+				$("#quitexe").after(language_broswer['exit_program']);
 			</script>
 		</div>
 		<!--<div id="load" align="center">
@@ -57,7 +56,7 @@
 
 		</div>-->
 		<!-- 首先放一个div，用做loading效果 -->
-		<div class="update-pannel">
+		<div class="update-pannel" id="holder">
 			<div class="title-content" style="display: none;">
 				<div class="clogo">
 					<div id="version"></div>
@@ -77,8 +76,9 @@
 					</div>
 					<!--按钮-->
 					<div class="btn-content">
-						<button class="btn btn-success right" id="update_now" style="margin-left: 178px;"></button>
 						<button class="btn btn-primary right" id="skip_now" onclick="goto_page()"></button>
+						<button class="btn btn-success right" id="update_now" style="margin-right: 12px;"></button>
+
 						<script>
 							$("#update_now").html(language_broswer['update_now']);
 							$("#skip_now").html(language_broswer['skip_now']);
@@ -99,6 +99,9 @@
 			window.gui = require('nw.gui');
 			var nw = require('nw.gui');
 			var winparent = nw.Window.get();
+			nw.App.on('open', function() {
+				winparent.show();
+			});
 			//窗口默认不最大化
 			winparent.isMaximized = false;
 			var isShowWindow = true;
@@ -134,6 +137,16 @@
 					var jsonobj = JSON.parse(jsonstr);
 					if (jsonobj[0] == "show_window") {
 						winparent.show();
+					} else if (jsonobj[0] == "link") {
+						if(jsonobj[1] != undefined && jsonobj[1] != "" && jsonobj[1].indexOf('javascript') == -1){
+							gui.Shell.openExternal(jsonobj[1]);
+						}
+						else{
+							return false;
+						}
+						
+					} else if (jsonobj[0] == "capture_desktop") {
+						captureDeskTop();
 					} else {
 						if (is_show_notion == "true") {
 							showFunnyNotification(jsonobj[0], jsonobj[1]);
@@ -146,7 +159,8 @@
 			window_resize_init();
 			$(window).bind('resize', resizeframe);
 			$(function() {
-				update_config();
+				resizeframe();
+				set_config_init();
 				setTimeout(function() {
 					gui.Window.get().show();
 					if (is_check_update == "true") {
@@ -155,6 +169,7 @@
 						goto_page();
 					}
 				}, 100);
+
 			});
 			//检查更新
 			function check_update() {
@@ -236,7 +251,7 @@
 					var newVersion = upd.download(function(error, filename) {
 						newVersionDownloaded(error, filename, manifest);
 					}, manifest);
-					//滚动条
+					//滚动条1231
 					newVersion.on('data', function(chunk) {
 						loaded += chunk.length;
 						var percent1 = Math.floor(loaded / newVersion['content-length'] * 100);
@@ -244,7 +259,7 @@
 						target_my.css("width", percent1 + '%');
 						target_my[0].innerHTML = percent1 + '%';
 						target_my.attr("aria-valuenow", percent1);
-						document.getElementById('loaded').innerHTML = language_broswer['New_version_loading'] + Math.floor(loaded / newVersion['content-length'] * 100) + '%';
+						document.getElementById('loaded').innerHTML = language_broswer['new_version_loading'] + percent1 + '%';
 					})
 				} else {
 					//点击立即更新
@@ -261,7 +276,7 @@
 							target_my.css("width", percent1 + '%');
 							target_my[0].innerHTML = percent1 + '%';
 							target_my.attr("aria-valuenow", percent1);
-							document.getElementById('loaded').innerHTML = language_broswer['new_version_loading'] + Math.floor(loaded / newVersion['content-length'] * 100) + '%';
+							document.getElementById('loaded').innerHTML = language_broswer['new_version_loading'] + percent1 + '%';
 						})
 					});
 				}
@@ -294,8 +309,10 @@
 			//
 			//自动改变iframe大小
 			function resizeframe() {
-				var new_height = $("body").height() - 30;
+				var new_height = $(".main").height() - 30 - 1;
 				$("#iframepage").css("height", new_height + "px");
+				var new_width = $(".main").width() - 1;
+				$("#iframepage").css("width", new_width + "px");
 			}
 			//点击事件注册
 			function window_resize_init() {
@@ -405,7 +422,7 @@
 							winparent.show();
 							isShowWindow = true;
 						}
-					}
+					},
 				}));
 				menu.append(new nw.MenuItem({
 					type: 'normal',
@@ -426,6 +443,15 @@
 							isShowWindow = true;
 						}
 					});
+				tray.on('dblclick', function() {
+					if (isShowWindow) {
+						winparent.hide();
+						isShowWindow = false;
+					} else {
+						winparent.show();
+						isShowWindow = true;
+					}
+				});
 				//Close window to hide;
 				winparent.on('close', function() {
 					this.hide();
@@ -443,10 +469,48 @@
 				setTimeout(function() {
 					$(".update-pannel").fadeOut("normal");
 					$("#iframepage").show();
-				}, 800)
+				}, 1000)
+			}
+
+			function captureDeskTop() {
+				var childwin = gui.Window.open('createpicture.html', {
+					frame: false,
+					toolbar: false,
+					width: 0,
+					height: 0,
+					'always-on-top': true,
+					show: false,
+					resizable: false
+				});
+				childwin.on('loaded', function() {
+					childwin.window.haveParent(winparent);
+				});
+			}
+
+			function yesgotit() {
+				var frm = document.getElementById("iframepage");
+				var rootpath = path.dirname(process.execPath);
+				var filename = "imagecat.png"
+					//发送截图路径
+				var jsonobj = [];
+				jsonobj.push('upload_desktop_img');
+				jsonobj.push(rootpath);
+				jsonobj.push(filename);
+				jsonstr = JSON.stringify(jsonobj);
+				//frm.contentWindow.postMessage(jsonstr, "*")
+				//var r = request.post("http://webtalk.com/drop_file_to_server");
+				//var upload = fs.createReadStream(filepath + '\\' + filename)
+				console.log(rootpath);
+//				var form = r.form();
+//				form.append('file', upload);
+//				upload.on("end", function(res) {
+//					//upload finished
+//					console.log(res);
+//
+//				})
 			}
 		</script>
-
+		<script src="./scripts/jquery.setconfig.js" type="text/javascript" charset="utf-8"></script>
 	</body>
 
 </html>

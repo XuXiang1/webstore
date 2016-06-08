@@ -1,6 +1,6 @@
 var language_broswer = LANG.japanese;
 try {
-	var currentlang = navigator.language;
+	var currentlang = "jp";
 	if(currentlang.indexOf("zh") != -1){
 		language_broswer = LANG.chinese;
 	}

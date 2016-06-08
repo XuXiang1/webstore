@@ -2,10 +2,10 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "WowTalk"
-#define MyAppVersion "1.1.3"
+#define MyAppVersion "2.1.6"
 #define MyAppPublisher "KINGSOFT JAPAN, INC."
 #define MyAppURL "https://biz.wowtalk.org/webtalk/"
-#define MyAppExeName "nw.exe"
+#define MyAppExeName "wowtalk.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -22,8 +22,8 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=D:\webstore\wow_install
-OutputBaseFilename=wowtalk_setup_v1.1.3_test
-SetupIconFile=C:\Users\Administrator\Desktop\favicon.ico
+OutputBaseFilename=wowtalk_setup_win32_v2.1.6
+SetupIconFile=D:\webstore\wow_install\favicon.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -31,27 +31,26 @@ SolidCompression=yes
 Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "japanese"; MessagesFile: "compiler:Languages\Japanese.isl"
 
-[Tasks]
-Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+[Tasks]Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: dontinheritcheck
 
 [Files]
-Source: "D:\webstore\wow_app\nw.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\credits.html"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\d3dcompiler_47.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\debug.log"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\ffmpegsumo.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\icudtl.dat"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\image.png"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\imagecat.png"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\libEGL.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\libGLESv2.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\nw.pak"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\nwjc.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\package.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\pdf.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\webstore\wow_app\locales\*"; DestDir: "{app}\locales"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\webstore\wow_app\node_modules\*"; DestDir: "{app}\node_modules"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "D:\webstore\wow_app\src\*"; DestDir: "{app}\src"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\webstore\wow_app_32\wowtalk.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\credits.html"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\fav.ico"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\d3dcompiler_47.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\ffmpegsumo.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\icudtl.dat"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\image.png"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\imagecat.png"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\libEGL.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\libGLESv2.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\nw.pak"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\nwjc.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\package.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\pdf.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\webstore\wow_app_32\locales\*"; DestDir: "{app}\locales"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\webstore\wow_app_32\node_modules\*"; DestDir: "{app}\node_modules"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "D:\webstore\wow_app_32\src\*"; DestDir: "{app}\src"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]

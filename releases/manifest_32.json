@@ -2,10 +2,10 @@
 		"name": "wowtalk_setup_v2.1.6",
 		"version": "2.1.6",
 		"author": "Jason Xu <xuxiang@wowtech-inc.com>",
-		"manifestUrl": "https://biz.wowtalk.org/webtalk/releases/manifest.json",
+		"manifestUrl": "https://biz.wowtalk.org/webtalk/releases/manifest_32.json",
 		"packages": {
 			"win": {
-				"url": "http://biz.wowtalk.org/webtalk/releases/win/wowtalk_setup_v2.1.6.zip"
+				"url": "http://biz.wowtalk.org/webtalk/releases/win/wowtalk_setup_win32_v2.1.6.zip"
 			}
 		},
 		"main_url_to":"https://biz.wowtalk.org/webtalk/",
