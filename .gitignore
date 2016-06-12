@@ -1,0 +1,10 @@
+/wow_install/
+/releases/win/
+/wow_app_32/
+/uploads/
+/nwjs-v0.12.0-win-ia32/
+/nwjs-v0.12.0-win-x64/
+/.project
+/.gitignore
+debug.log
+releases.zip
