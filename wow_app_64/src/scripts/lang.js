@@ -14,7 +14,10 @@ var LANG = {
 		'quit': 'Quit',
 		'news_popup': "Popup news",
 		'check_pudate': "Check update",
-		'exit_program': "Exit program"
+		'exit_program': "Exit program",
+		'cut':'Cut',
+		'copy':'Copy',
+		'paste':'Paste'
 	},
 	'japanese': {
 		'test_language': 'jp',
@@ -31,7 +34,10 @@ var LANG = {
 		'quit': '閉じる',
 		'news_popup': "お知らせ",
 		'check_pudate': "更新を確認",
-		'exit_program': "終了"
+		'exit_program': "終了",
+		'cut':'カット',
+		'copy':'コピー',
+		'paste':'貼付'
 	},
 	'chinese': {
 		'test_language': 'zh',
@@ -48,6 +54,9 @@ var LANG = {
 		'quit': '退出',
 		'news_popup': "新消息通知",
 		'check_pudate': "检查更新",
-		'exit_program': "退出程序"
+		'exit_program': "退出程序",
+		'cut':'剪切',
+		'copy':'复制',
+		'paste':'粘贴'
 	}
 }

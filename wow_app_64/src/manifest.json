@@ -1,15 +1,15 @@
  {
-		"name": "wowtalk_setup_win64_v2.1.6",
-		"version": "2.1.6",
+		"name": "wowtalk_setup_win64_v2.2.0",
+		"version": "2.2.0",
 		"author": "Jason Xu <xuxiang@wowtech-inc.com>",
-		"manifestUrl": "https://biz.wowtalk.org/webtalk/releases/manifest_64.json",
+		"manifestUrl": "https://dev02web-jp001.wowtalkapi.com/webtalk/releases/manifest_test_64.json",
 		"packages": {
 			"win": {
-				"url": "http://biz.wowtalk.org/webtalk/releases/win/wowtalk_setup_win64_v2.1.6.zip"
+				"url": "http://dev02web-jp001.wowtalkapi.com/webtalk/releases/win/wowtalk_setup_win64_v2.2.0.zip"
 			}
 		},
-		"main_url_to":"https://biz.wowtalk.org/webtalk/",
-		"description_chinese":["BUG","修复文件拖拽至窗口即打开文件问题","BUG","修复点击链接在窗口中打开链接问题","优化功能","程序运行并最下化时，双击快捷方式或双击状态栏图标即显示程序"],
-		"description_english":["BUG","修复文件拖拽至窗口即打开文件问题","BUG","修复点击链接在窗口中打开链接问题","优化功能","程序运行并最下化时，双击快捷方式或双击状态栏图标即显示程序"],
-		"description_japanese":["BUG","修复文件拖拽至窗口即打开文件问题","BUG","修复点击链接在窗口中打开链接问题","优化功能","程序运行并最下化时，双击快捷方式或双击状态栏图标即显示程序"]
+		"main_url_to":"https://dev02web-jp001.wowtalkapi.com/webtalk/",
+		"description_chinese":[],
+		"description_english":[],
+		"description_japanese":[]
 }

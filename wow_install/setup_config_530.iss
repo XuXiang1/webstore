@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "WowTalk"
-#define MyAppVersion "2.1.6"
+#define MyAppVersion "2.2.0"
 #define MyAppPublisher "KINGSOFT JAPAN, INC."
 #define MyAppURL "https://biz.wowtalk.org/webtalk/"
 #define MyAppExeName "wowtalk.exe"
@@ -22,7 +22,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=D:\webstore\wow_install
-OutputBaseFilename=wowtalk_setup_win64_v2.1.6
+OutputBaseFilename=wowtalk_setup_win32_v2.2.0
 SetupIconFile=D:\webstore\wow_install\favicon.ico
 Compression=lzma
 SolidCompression=yes
@@ -54,7 +54,9 @@ Source: "D:\webstore\wow_app_32\src\*"; DestDir: "{app}\src"; Flags: ignoreversi
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{commonprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
+Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
+Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
